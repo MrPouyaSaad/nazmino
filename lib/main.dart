@@ -28,7 +28,7 @@ class MyApp extends StatelessWidget {
       title: 'Nazmino',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        colorScheme: ColorScheme.fromSeed(seedColor: Color(0xff0c2a43)),
       ),
       home: TransactionsListScreen(),
     );

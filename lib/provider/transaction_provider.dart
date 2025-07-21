@@ -15,7 +15,7 @@ class TransactionProvider extends ChangeNotifier {
   /// This method adds a transaction to the list and notifies listeners.
   /// @param transaction The transaction to add.
   /// @return void
-  void addTransaction(Transaction transaction) {
+  void addTransaction({required Transaction transaction}) {
     _transactions.add(transaction);
     notifyListeners();
   }
