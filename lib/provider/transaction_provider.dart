@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:nazmino/data/database/transaction_db.dart';
 import 'package:nazmino/model/transaction.dart';
@@ -18,6 +20,8 @@ class TransactionProvider extends ChangeNotifier {
   /// Load transactions from the database.
   Future<void> loadTransactions() async {
     final dbTransactions = await _db.getAllTransactions();
+    log('Transaction Count: ${dbTransactions.length}');
+
     _transactions.clear();
     _transactions.addAll(dbTransactions);
     notifyListeners();
@@ -30,6 +34,9 @@ class TransactionProvider extends ChangeNotifier {
 
   void addTransaction({required Transaction transaction}) async {
     await _db.insertTransaction(transaction);
+    final dbTransactions = await _db.getAllTransactions();
+    log('Transaction added: ${dbTransactions.last.title}');
+    log('Transaction Count: ${dbTransactions.length}');
     _transactions.add(transaction);
     notifyListeners();
   }

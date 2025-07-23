@@ -53,12 +53,12 @@ class TransactionDatabase extends _$TransactionDatabase {
   // Insert a new transaction
   Future<int> insertTransaction(Transaction transaction) {
     return into(transactionTable).insert(
-      TransactionTableCompanion(
-        id: Value(transaction.id),
-        title: Value(transaction.title),
-        amount: Value(transaction.amount),
-        isInCome: Value(transaction.isInCome),
-        date: Value(transaction.date),
+      TransactionTableData(
+        id: transaction.id,
+        title: transaction.title,
+        amount: transaction.amount,
+        isInCome: transaction.isInCome,
+        date: transaction.date,
       ),
     );
   }
