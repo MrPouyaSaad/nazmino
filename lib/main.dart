@@ -1,3 +1,4 @@
+import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/material.dart';
 import 'package:nazmino/provider/transaction_provider.dart';
 import 'package:nazmino/view/transactions_list_screen.dart';
@@ -27,8 +28,24 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Nazmino',
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Color(0xff0c2a43)),
+      themeMode: ThemeMode.light,
+      darkTheme: FlexThemeData.dark(
+        scheme: FlexScheme.indigo,
+
+        // surfaceMode: FlexSurfaceMode.levelSurfacesLowScaffold,
+        // blendLevel: 20,
+        // appBarStyle: FlexAppBarStyle.background,
+        // useMaterial3: true,
+        // visualDensity: FlexColorScheme.comfortablePlatformDensity,
+      ),
+
+      theme: FlexThemeData.light(
+        scheme: FlexScheme.aquaBlue,
+        // surfaceMode: FlexSurfaceMode.levelSurfacesLowScaffold,
+        // blendLevel: 20,
+        // appBarStyle: FlexAppBarStyle.background,
+        // useMaterial3: true,
+        // visualDensity: FlexColorScheme.comfortablePlatformDensity,
       ),
       home: TransactionsListScreen(),
     );

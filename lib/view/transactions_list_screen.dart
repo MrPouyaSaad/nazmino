@@ -23,13 +23,13 @@ class TransactionsListScreen extends StatelessWidget {
           ),
         ),
         centerTitle: true,
-        backgroundColor: Color(0xff1E6091),
-        foregroundColor: Colors.white,
+        // backgroundColor: Color(0xff1E6091),
+        // foregroundColor: Colors.white,
       ),
-      backgroundColor: Colors.white,
+      // backgroundColor: Colors.white,
       floatingActionButton: FloatingActionButton(
-        backgroundColor: Color(0xff1E6091),
-        foregroundColor: Colors.white,
+        // backgroundColor: Color(0xff1E6091),
+        // foregroundColor: Colors.white,
         onPressed: () => showModalBottomSheet(
           context: context,
           builder: (context) => AddTransactionScreen(),
@@ -40,6 +40,7 @@ class TransactionsListScreen extends StatelessWidget {
         child: ListView.builder(
           itemCount: transactionProvider.transactions.length + 2,
           itemBuilder: (context, index) {
+            int transactionIndex = index - 2;
             switch (index) {
               case 0:
                 return TotalReport(transactionProvider: transactionProvider);
@@ -100,7 +101,8 @@ class TransactionsListScreen extends StatelessWidget {
               onTap: () => showModalBottomSheet(
                 context: context,
                 builder: (context) => AddTransactionScreen(
-                  transaction: transactionProvider.transactions[index - 1],
+                  transaction:
+                      transactionProvider.transactions[transactionIndex],
                 ),
               ),
               onLongPress: () {
@@ -122,7 +124,7 @@ class TransactionsListScreen extends StatelessWidget {
                       TextButton(
                         onPressed: () {
                           transactionProvider.removeTransaction(
-                            transactionProvider.transactions[index - 2],
+                            transactionProvider.transactions[transactionIndex],
                           );
                           Navigator.of(context).pop();
                         },
@@ -140,10 +142,10 @@ class TransactionsListScreen extends StatelessWidget {
                 color: Colors.white,
                 child: ListTile(
                   title: Text(
-                    transactionProvider.transactions[index - 2].title,
+                    transactionProvider.transactions[transactionIndex].title,
                   ),
                   subtitle: Text(
-                    transactionProvider.transactions[index - 1].isInCome
+                    transactionProvider.transactions[transactionIndex].isInCome
                         ? 'Income'
                         : 'Expense',
                   ),
@@ -151,13 +153,15 @@ class TransactionsListScreen extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        transactionProvider.transactions[index - 1].amount
+                        transactionProvider
+                            .transactions[transactionIndex]
+                            .amount
                             .toPriceStringWithCurrency(),
                         style: TextStyle(
                           fontSize: 13,
                           color:
                               transactionProvider
-                                  .transactions[index - 1]
+                                  .transactions[transactionIndex]
                                   .isInCome
                               ? Colors.green
                               : Colors.red,
@@ -165,7 +169,7 @@ class TransactionsListScreen extends StatelessWidget {
                       ),
                       SizedBox(height: 4),
                       Text(
-                        transactionProvider.transactions[index - 1].id
+                        transactionProvider.transactions[transactionIndex].id
                             .substring(0, 10),
                       ),
                     ],

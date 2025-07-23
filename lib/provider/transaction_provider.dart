@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:nazmino/data/database/transaction_db.dart';
 import 'package:nazmino/model/transaction.dart';
 
 class TransactionProvider extends ChangeNotifier {
+  /// The database instance.
+  final TransactionDatabase _db = TransactionDatabase();
+
   /// The list of transactions.
   /// This is a private field that holds the transactions.
   final List<Transaction> _transactions = [];
@@ -11,11 +15,21 @@ class TransactionProvider extends ChangeNotifier {
   /// @return The list of transactions.
   List<Transaction> get transactions => _transactions;
 
+  /// Load transactions from the database.
+  Future<void> loadTransactions() async {
+    final dbTransactions = await _db.getAllTransactions();
+    _transactions.clear();
+    _transactions.addAll(dbTransactions);
+    notifyListeners();
+  }
+
   /// Add a transaction to the list.
   /// This method adds a transaction to the list and notifies listeners.
   /// @param transaction The transaction to add.
   /// @return void
-  void addTransaction({required Transaction transaction}) {
+
+  void addTransaction({required Transaction transaction}) async {
+    await _db.insertTransaction(transaction);
     _transactions.add(transaction);
     notifyListeners();
   }

@@ -3,6 +3,7 @@ class Transaction {
   final String title;
   final double amount;
   final bool isInCome;
+  final DateTime date = DateTime.now();
 
   Transaction({
     required this.id,
