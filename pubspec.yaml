@@ -98,6 +98,10 @@ flutter:
     - family: YekanBakh
       fonts:
         - asset: assets/fonts/YekanBakh-Regular.ttf    
+
+    - family: YekanBakhFaNum
+      fonts:
+        - asset: assets/fonts/YekanBakhFaNum-Regular.ttf    
   #       - asset: fonts/TrajanPro_Bold.ttf
   #         weight: 700
   #

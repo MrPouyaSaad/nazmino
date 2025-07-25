@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:nazmino/controller/theme_controller.dart';
 import 'package:nazmino/core/translate/messages.dart';
 import 'package:nazmino/provider/transaction_provider.dart';
 import 'package:nazmino/widgets/transaction_tile.dart';
@@ -81,6 +82,16 @@ class _TransactionsListScreenState extends State<TransactionsListScreen> {
       appBar: AppBar(
         title: Text(AppMessages.appName.tr),
         centerTitle: true,
+        leading: IconButton(
+          tooltip: 'Toggle Theme'.tr,
+          icon: Obx(() {
+            final isDark = Get.find<ThemeController>().isDarkMode.value;
+            return Icon(isDark ? Icons.dark_mode : Icons.light_mode);
+          }),
+          onPressed: () {
+            Get.find<ThemeController>().toggleTheme();
+          },
+        ),
         actions: [
           // popup menu for language selection
           const LanguageSwitcher(),

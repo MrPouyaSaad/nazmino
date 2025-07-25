@@ -1,21 +1,23 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:nazmino/core/translate/lang/lang_list.dart';
 
-import '../controller/lang_controller.dart';
+import '../core/translate/lang/lang_list.dart';
+import '../service/lang_load_service.dart';
 
 class LanguageSwitcher extends StatelessWidget {
   const LanguageSwitcher({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.put(LanguageController());
+    final localeService = Get.find<LocaleService>();
 
     return Obx(() {
       final selectedLang = LangList.languages.firstWhere(
         (lang) =>
             lang['locale'].languageCode ==
-            controller.currentLocale.value.languageCode,
+            localeService.currentLocale.value.languageCode,
         orElse: () => LangList.languages.first,
       );
 
@@ -32,11 +34,11 @@ class LanguageSwitcher extends StatelessWidget {
             height: 28,
           ),
         ),
-        onSelected: (String code) {
-          final selected = LangList.languages.firstWhere(
-            (lang) => lang['code'] == code,
-          );
-          controller.changeLanguage(selected['locale']);
+        onSelected: (String code) async {
+          log('Language changed to $code and saved in shared preferences');
+          await localeService.changeLocale(
+            code,
+          ); // این currentLocale.value رو هم آپدیت می‌کنه
         },
         itemBuilder: (BuildContext context) {
           return LangList.languages.map((lang) {

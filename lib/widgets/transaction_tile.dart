@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:nazmino/core/translate/messages.dart' show AppMessages;
 import 'package:nazmino/model/transaction.dart';
 import 'package:nazmino/core/price_extention.dart';
 
@@ -18,14 +20,12 @@ class TransactionTile extends StatelessWidget {
     showDialog(
       context: context,
       builder: (_) => AlertDialog(
-        title: const Text('Delete Transaction'),
-        content: const Text(
-          'Are you sure you want to delete this transaction?',
-        ),
+        title: Text(AppMessages.deleteTransaction.tr),
+        content: Text(AppMessages.confirmDelete.tr),
         actions: [
           TextButton(
             onPressed: Navigator.of(context).pop,
-            child: const Text('Cancel'),
+            child: Text(AppMessages.cancel.tr),
           ),
           TextButton(
             onPressed: () {
@@ -33,7 +33,7 @@ class TransactionTile extends StatelessWidget {
               Navigator.of(context).pop();
             },
             child: Text(
-              'Delete',
+              AppMessages.delete.tr,
               style: TextStyle(color: Theme.of(context).colorScheme.error),
             ),
           ),
@@ -44,46 +44,63 @@ class TransactionTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return GestureDetector(
       onTap: onTap,
       onLongPress: () => _confirmDelete(context),
       child: Card(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(0)),
-
         margin: EdgeInsets.zero,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(0),
+          side: BorderSide(
+            color: theme.dividerColor.withOpacity(0.1),
+            width: 0.5,
+          ),
+        ),
+        color: theme.cardColor,
+        elevation: 0,
         child: ListTile(
+          dense: true,
+          contentPadding: const EdgeInsets.symmetric(
+            horizontal: 16,
+            vertical: 0,
+          ),
           title: Text(
             transaction.title,
-            style: TextStyle(
-              color: Theme.of(context).primaryColor,
-              fontSize: 14,
-              wordSpacing: -2,
+            style: theme.textTheme.bodyMedium?.copyWith(
+              color: theme.colorScheme.onSurface,
               fontWeight: FontWeight.bold,
             ),
           ),
           subtitle: Text(
-            transaction.isInCome ? 'Income' : 'Expense',
-            style: TextStyle(
-              color: Color(0xff607D8B),
-              fontSize: 12,
-              fontWeight: FontWeight.bold,
+            transaction.isInCome
+                ? AppMessages.income.tr
+                : AppMessages.expense.tr,
+            style: theme.textTheme.bodySmall?.copyWith(
+              color: theme.colorScheme.onSurface.withOpacity(0.6),
             ),
           ),
           trailing: Column(
             mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.end,
             children: [
               Text(
                 transaction.amount.toPriceStringWithCurrency(),
-                style: TextStyle(
-                  fontSize: 13,
+                style: theme.textTheme.bodyMedium?.copyWith(
                   fontWeight: FontWeight.bold,
                   color: transaction.isInCome
-                      ? Color(0xff2E7D32)
-                      : Theme.of(context).colorScheme.error,
+                      ? theme.colorScheme.tertiary
+                      : theme.colorScheme.error,
                 ),
               ),
               const SizedBox(height: 4),
-              Text(transaction.id.substring(0, 10)),
+              Text(
+                transaction.id.substring(0, 10),
+                style: theme.textTheme.bodySmall?.copyWith(
+                  color: theme.colorScheme.onSurface.withOpacity(0.4),
+                ),
+              ),
             ],
           ),
         ),

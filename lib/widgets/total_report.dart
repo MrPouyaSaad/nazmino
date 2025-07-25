@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:nazmino/core/price_extention.dart';
 import 'package:nazmino/provider/transaction_provider.dart';
-
 import '../core/translate/messages.dart' show AppMessages;
 
 class TotalReport extends StatelessWidget {
@@ -12,66 +11,73 @@ class TotalReport extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final themeData = Theme.of(context);
-    final titleStyle = TextStyle(
-      color: Color(0xff607D8B),
-      fontSize: 16,
+    final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
+
+    final titleStyle = theme.textTheme.bodyMedium?.copyWith(
+      color: theme.colorScheme.onSurface.withOpacity(0.7),
       fontWeight: FontWeight.bold,
     );
+
     return Container(
       padding: const EdgeInsets.all(16.0),
       margin: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 16.0),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: theme.cardColor,
         borderRadius: BorderRadius.circular(12.0),
+        boxShadow: [
+          if (!isDark)
+            BoxShadow(
+              color: Colors.grey.withOpacity(0.1),
+              blurRadius: 10,
+              offset: const Offset(0, 4),
+            ),
+        ],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          ListTile(
-            minVerticalPadding: 0,
-            minTileHeight: 28,
-            contentPadding: EdgeInsets.zero,
-            title: Text('${AppMessages.totalAmount.tr} :', style: titleStyle),
-            trailing: Text(
-              transactionProvider.totalAmount.toPriceStringWithCurrency(),
-              style: TextStyle(
-                color: themeData.colorScheme.primary,
-                fontWeight: FontWeight.bold,
-                fontSize: 16,
-              ),
-            ),
+          _buildReportItem(
+            context,
+            title: '${AppMessages.totalAmount.tr} :',
+            value: transactionProvider.totalAmount.toPriceStringWithCurrency(),
+            color: theme.colorScheme.primary,
+            style: titleStyle,
           ),
-          ListTile(
-            minVerticalPadding: 0,
-            minTileHeight: 28,
-            contentPadding: EdgeInsets.zero,
-            title: Text('${AppMessages.totalIncome.tr} :', style: titleStyle),
-            trailing: Text(
-              transactionProvider.totalIncome.toPriceStringWithCurrency(),
-              style: TextStyle(
-                color: Color(0xff2E7D32),
-                fontWeight: FontWeight.bold,
-                fontSize: 16,
-              ),
-            ),
+          const Divider(height: 24),
+          _buildReportItem(
+            context,
+            title: '${AppMessages.totalIncome.tr} :',
+            value: transactionProvider.totalIncome.toPriceStringWithCurrency(),
+            color: theme.colorScheme.tertiary,
+            style: titleStyle,
           ),
-          ListTile(
-            minVerticalPadding: 0,
-            minTileHeight: 28,
-            contentPadding: EdgeInsets.zero,
-            title: Text('${AppMessages.totalExpense.tr} :', style: titleStyle),
-            trailing: Text(
-              transactionProvider.totalExpense.toPriceStringWithCurrency(),
-              style: TextStyle(
-                color: themeData.colorScheme.error,
-                fontWeight: FontWeight.bold,
-                fontSize: 16,
-              ),
-            ),
+          const Divider(height: 24),
+          _buildReportItem(
+            context,
+            title: '${AppMessages.totalExpense.tr} :',
+            value: transactionProvider.totalExpense.toPriceStringWithCurrency(),
+            color: theme.colorScheme.error,
+            style: titleStyle,
           ),
         ],
       ),
+    );
+  }
+
+  Widget _buildReportItem(
+    BuildContext context, {
+    required String title,
+    required String value,
+    required Color color,
+    required TextStyle? style,
+  }) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text(title, style: style),
+        Text(value, style: style?.copyWith(color: color)),
+      ],
     );
   }
 }
