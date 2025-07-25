@@ -1,9 +1,12 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:nazmino/core/translate/messages.dart';
 import 'package:nazmino/provider/transaction_provider.dart';
 import 'package:nazmino/widgets/transaction_tile.dart';
 import 'package:provider/provider.dart';
 import 'package:nazmino/widgets/total_report.dart';
-import 'package:nazmino/widgets/add_transaction_screen.dart';
+import 'package:nazmino/view/add_transaction_screen.dart';
 
 class TransactionsListScreen extends StatefulWidget {
   const TransactionsListScreen({super.key});
@@ -30,6 +33,10 @@ class _TransactionsListScreenState extends State<TransactionsListScreen> {
   void _showAddTransaction([transaction]) {
     showModalBottomSheet(
       context: context,
+      enableDrag: true,
+      isDismissible: true,
+      isScrollControlled: true,
+      showDragHandle: true,
       builder: (_) => AddTransactionScreen(transaction: transaction),
     );
   }
@@ -38,12 +45,12 @@ class _TransactionsListScreenState extends State<TransactionsListScreen> {
     showDialog(
       context: context,
       builder: (_) => AlertDialog(
-        title: const Text('Clear All Transactions'),
-        content: const Text('Are you sure you want to clear all transactions?'),
+        title: Text(AppMessages.deleteAllTransactions.tr),
+        content: Text(AppMessages.confirmDeleteAll.tr),
         actions: [
           TextButton(
             onPressed: Navigator.of(context).pop,
-            child: const Text('Cancel'),
+            child: Text(AppMessages.cancel.tr),
           ),
           TextButton(
             onPressed: () {
@@ -53,7 +60,10 @@ class _TransactionsListScreenState extends State<TransactionsListScreen> {
               ).clearTransactions();
               Navigator.of(context).pop();
             },
-            child: const Text('Clear All', style: TextStyle(color: Colors.red)),
+            child: Text(
+              AppMessages.deleteAll.tr,
+              style: TextStyle(color: Theme.of(context).colorScheme.error),
+            ),
           ),
         ],
       ),
@@ -66,20 +76,38 @@ class _TransactionsListScreenState extends State<TransactionsListScreen> {
     final transactions = provider.transactions;
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Nazmino'), centerTitle: true),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _showAddTransaction,
-        child: const Icon(Icons.add),
+      appBar: AppBar(
+        title: Text(AppMessages.appName.tr),
+        centerTitle: true,
+        leading: TextButton(
+          onPressed: () {
+            if (Get.locale?.languageCode == 'fa') {
+              Get.updateLocale(const Locale('en', 'US'));
+            } else {
+              Get.updateLocale(const Locale('fa', 'IR'));
+            }
+          },
+          child: Text(
+            Get.locale?.languageCode == 'fa' ? 'Fa' : 'En',
+            style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+          ),
+        ),
       ),
+      floatingActionButton: _isLoading
+          ? null
+          : FloatingActionButton(
+              onPressed: _showAddTransaction,
+              child: const Icon(Icons.add),
+            ),
       body: _isLoading
-          ? const Center(child: CircularProgressIndicator())
+          ? Center(child: CupertinoActivityIndicator(radius: 12))
           : transactions.isEmpty
-          ? const Center(child: Text('No transactions added yet.'))
+          ? Center(child: Text(AppMessages.noTransactions.tr))
           : ListView(
               children: [
                 TotalReport(transactionProvider: provider),
                 _buildHeader(context),
-                ...transactions.map(
+                ...transactions.reversed.map(
                   (t) => TransactionTile(
                     transaction: t,
                     onTap: () => _showAddTransaction(t),
@@ -93,15 +121,21 @@ class _TransactionsListScreenState extends State<TransactionsListScreen> {
 
   Widget _buildHeader(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8),
+      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          const Text('Transactions', style: TextStyle(fontSize: 16)),
+          Text(AppMessages.transactions.tr, style: TextStyle(fontSize: 16)),
           TextButton.icon(
             onPressed: () => _showDeleteAllConfirmation(context),
-            icon: const Icon(Icons.delete_outline, color: Colors.red),
-            label: const Text('Clear All', style: TextStyle(color: Colors.red)),
+            icon: Icon(
+              Icons.delete_outline,
+              color: Theme.of(context).colorScheme.error,
+            ),
+            label: Text(
+              AppMessages.deleteAll.tr,
+              style: TextStyle(color: Theme.of(context).colorScheme.error),
+            ),
           ),
         ],
       ),

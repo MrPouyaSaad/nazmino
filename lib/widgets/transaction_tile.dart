@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:nazmino/model/transaction.dart';
-import 'package:nazmino/common/price_extention.dart';
+import 'package:nazmino/core/price_extention.dart';
 
 class TransactionTile extends StatelessWidget {
   final Transaction transaction;
@@ -32,7 +32,10 @@ class TransactionTile extends StatelessWidget {
               onDelete();
               Navigator.of(context).pop();
             },
-            child: const Text('Delete', style: TextStyle(color: Colors.red)),
+            child: Text(
+              'Delete',
+              style: TextStyle(color: Theme.of(context).colorScheme.error),
+            ),
           ),
         ],
       ),
@@ -49,8 +52,23 @@ class TransactionTile extends StatelessWidget {
 
         margin: EdgeInsets.zero,
         child: ListTile(
-          title: Text(transaction.title),
-          subtitle: Text(transaction.isInCome ? 'Income' : 'Expense'),
+          title: Text(
+            transaction.title,
+            style: TextStyle(
+              color: Theme.of(context).primaryColor,
+              fontSize: 14,
+              wordSpacing: -2,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          subtitle: Text(
+            transaction.isInCome ? 'Income' : 'Expense',
+            style: TextStyle(
+              color: Color(0xff607D8B),
+              fontSize: 12,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
           trailing: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -58,7 +76,10 @@ class TransactionTile extends StatelessWidget {
                 transaction.amount.toPriceStringWithCurrency(),
                 style: TextStyle(
                   fontSize: 13,
-                  color: transaction.isInCome ? Colors.green : Colors.red,
+                  fontWeight: FontWeight.bold,
+                  color: transaction.isInCome
+                      ? Color(0xff2E7D32)
+                      : Theme.of(context).colorScheme.error,
                 ),
               ),
               const SizedBox(height: 4),

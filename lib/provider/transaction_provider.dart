@@ -45,7 +45,9 @@ class TransactionProvider extends ChangeNotifier {
   /// This method removes a transaction from the list and notifies listeners.
   /// @param transaction The transaction to remove.
   /// @return void
-  void removeTransaction(Transaction transaction) {
+  void removeTransaction(Transaction transaction) async {
+    await _db.deleteTransaction(transaction.id);
+    log('Transaction removed: ${transaction.title}');
     _transactions.remove(transaction);
     notifyListeners();
   }
@@ -53,7 +55,9 @@ class TransactionProvider extends ChangeNotifier {
   /// Clear all transactions from the list.
   /// This method clears all transactions from the list and notifies listeners.
   /// @return void
-  void clearTransactions() {
+  void clearTransactions() async {
+    await _db.deleteAllTransactions();
+    log('All transactions cleared');
     _transactions.clear();
     notifyListeners();
   }
@@ -91,7 +95,12 @@ class TransactionProvider extends ChangeNotifier {
   /// @param oldTransaction The transaction to edit.
   /// @param newTransaction The new transaction to replace the old one.
   /// @return void
-  void editTransaction(Transaction oldTransaction, Transaction newTransaction) {
+  void editTransaction(
+    Transaction oldTransaction,
+    Transaction newTransaction,
+  ) async {
+    await _db.updateTransaction(newTransaction);
+    log('Transaction edited: ${newTransaction.title}');
     final index = _transactions.indexOf(oldTransaction);
     if (index != -1) {
       _transactions[index] = newTransaction;
