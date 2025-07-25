@@ -1,6 +1,6 @@
 import 'package:get/get_navigation/get_navigation.dart';
-import 'package:nazmino/core/translate/en.dart';
-import 'package:nazmino/core/translate/fa.dart';
+import 'package:nazmino/core/translate/lang/en.dart';
+import 'package:nazmino/core/translate/lang/fa.dart';
 
 class AppTranslate extends Translations {
   // This class is used to provide translations for the application

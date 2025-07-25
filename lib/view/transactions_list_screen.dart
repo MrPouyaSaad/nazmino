@@ -8,6 +8,8 @@ import 'package:provider/provider.dart';
 import 'package:nazmino/widgets/total_report.dart';
 import 'package:nazmino/view/add_transaction_screen.dart';
 
+import '../widgets/language_switcher.dart';
+
 class TransactionsListScreen extends StatefulWidget {
   const TransactionsListScreen({super.key});
 
@@ -79,19 +81,11 @@ class _TransactionsListScreenState extends State<TransactionsListScreen> {
       appBar: AppBar(
         title: Text(AppMessages.appName.tr),
         centerTitle: true,
-        leading: TextButton(
-          onPressed: () {
-            if (Get.locale?.languageCode == 'fa') {
-              Get.updateLocale(const Locale('en', 'US'));
-            } else {
-              Get.updateLocale(const Locale('fa', 'IR'));
-            }
-          },
-          child: Text(
-            Get.locale?.languageCode == 'fa' ? 'Fa' : 'En',
-            style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-          ),
-        ),
+        actions: [
+          // popup menu for language selection
+          const LanguageSwitcher(),
+          const SizedBox(width: 8),
+        ],
       ),
       floatingActionButton: _isLoading
           ? null
