@@ -27,6 +27,7 @@ class AppMessages {
   static const String deleteAll = 'Delete All';
   static const String confirm = 'Confirm';
   static const String ok = 'OK';
+  static const String history = 'History';
   static const String error = 'Error';
   static const String success = 'Success';
   static const String loading = 'Loading';
@@ -40,4 +41,16 @@ class AppMessages {
   static const String enterValidAmount = 'Please enter a valid "Amount"';
   static const String enterPositiveAmount = 'Please enter a positive "Amount"';
   static const String enterValidTitle = 'Please enter a valid "Title"';
+  static const String aboutApp = 'About App';
+  static const String darkMode = 'Dark Mode';
+  static const String language = 'Language';
+  static const String defaultt = 'Default';
+  static const String selectCategory = 'Select Category';
+  static const String category = 'Category';
+  static const String addCategory = 'Add Category';
+  static const String newCategory = 'New Category';
+  static const String categoryName = 'Category Name';
+  static const String add = 'Add';
+  static const String selectedCategory = 'Selected category';
+  static const String all = 'All';
 }

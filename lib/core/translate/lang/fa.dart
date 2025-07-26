@@ -46,5 +46,18 @@ class FaKeys extends AppTranslationKeys {
     AppMessages.enterValidAmount: 'لطفاً یک "مبلغ" معتبر وارد کنید',
     AppMessages.enterPositiveAmount: 'لطفاً یک "مبلغ" مثبت وارد کنید',
     AppMessages.enterValidTitle: 'لطفاً یک "عنوان" معتبر وارد کنید',
+    AppMessages.history: 'تاریخچه',
+    AppMessages.aboutApp: 'درباره اپ',
+    AppMessages.language: "زبان",
+    AppMessages.darkMode: 'حالت تاریک',
+    AppMessages.defaultt: 'پیش‌فرض',
+    AppMessages.selectCategory: 'انتخاب دسته‌بندی',
+    AppMessages.category: 'دسته‌بندی',
+    AppMessages.addCategory: 'افزودن دسته‌بندی',
+    AppMessages.newCategory: 'دسته‌بندی جدید',
+    AppMessages.categoryName: 'نام دسته‌بندی',
+    AppMessages.add: 'افزودن',
+    AppMessages.selectedCategory: 'دسته‌بندی انتخاب شده',
+    AppMessages.all: 'همه',
   };
 }

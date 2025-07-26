@@ -44,5 +44,18 @@ class EnKeys extends AppTranslationKeys {
     AppMessages.enterValidAmount: 'Please enter a valid "Amount"',
     AppMessages.enterPositiveAmount: 'Please enter a positive "Amount"',
     AppMessages.enterValidTitle: 'Please enter a valid "Title"',
+    AppMessages.history: 'History',
+    AppMessages.aboutApp: 'About App',
+    AppMessages.language: "Language",
+    AppMessages.darkMode: 'Dark mode',
+    AppMessages.defaultt: 'Default',
+    AppMessages.selectCategory: 'Select Category',
+    AppMessages.category: 'Category',
+    AppMessages.addCategory: 'Add Category',
+    AppMessages.newCategory: 'New Category',
+    AppMessages.categoryName: 'Category Name',
+    AppMessages.add: 'Add',
+    AppMessages.selectedCategory: 'Selected category',
+    AppMessages.all: 'All',
   };
 }
