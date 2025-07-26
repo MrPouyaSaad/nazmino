@@ -1,6 +1,6 @@
 import 'package:drift/drift.dart';
 
-class TransactionTable extends Table {
+class TransactionHistoryTable extends Table {
   TextColumn get id => text()();
 
   TextColumn get title => text().withLength(min: 1, max: 50)();

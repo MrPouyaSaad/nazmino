@@ -3,6 +3,8 @@ import 'package:get/get.dart';
 import 'package:nazmino/controller/theme_controller.dart';
 import 'package:nazmino/core/theme/theme.dart';
 import 'package:nazmino/core/translate/translate.dart';
+import 'package:nazmino/provider/category_provider.dart';
+import 'package:nazmino/provider/transaction_history_provider.dart';
 import 'package:nazmino/provider/transaction_provider.dart';
 import 'package:nazmino/service/lang_load_service.dart';
 import 'package:nazmino/view/transactions_list_screen.dart';
@@ -18,6 +20,10 @@ void main() async {
     MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (context) => TransactionProvider()),
+        ChangeNotifierProvider(create: (context) => CategoryProvider()),
+        ChangeNotifierProvider(
+          create: (context) => TransactionHistoryProvider(),
+        ),
       ],
       child: const MyApp(),
     ),

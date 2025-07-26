@@ -30,8 +30,8 @@ android {
 
     defaultConfig {
 
- //    ndk {
-  //  abiFilters += listOf("armeabi-v7a", "arm64-v8a")
+  // ndk {
+   //abiFilters += listOf("armeabi-v7a", "arm64-v8a")
 //}
 
 
