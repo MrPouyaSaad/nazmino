@@ -1,6 +1,6 @@
 import 'package:intl/intl.dart';
 
-extension PriceExtention on num {
+extension PriceExtensions on double {
   String toPriceString() {
     return NumberFormat.currency(
       locale: 'en_US',
