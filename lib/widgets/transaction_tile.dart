@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:nazmino/core/translate/messages.dart' show AppMessages;
 import 'package:nazmino/model/transaction.dart';
-import 'package:nazmino/core/price_extention.dart';
+import 'package:nazmino/core/extensions/price_extensions.dart';
 
 class TransactionTile extends StatelessWidget {
   final Transaction transaction;

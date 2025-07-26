@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:nazmino/core/price_extention.dart';
-import 'package:nazmino/provider/transaction_provider.dart';
+import 'package:nazmino/core/extensions/price_extensions.dart';
+import 'package:nazmino/core/extensions/transaction_extensions.dart';
+import 'package:nazmino/model/transaction.dart';
 import '../core/translate/messages.dart' show AppMessages;
 
 class TotalReport extends StatelessWidget {
-  const TotalReport({super.key, required this.transactionProvider});
+  const TotalReport({super.key, required this.transactions});
 
-  final TransactionProvider transactionProvider;
+  final List<Transaction> transactions;
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +41,7 @@ class TotalReport extends StatelessWidget {
           _buildReportItem(
             context,
             title: '${AppMessages.totalAmount.tr} :',
-            value: transactionProvider.totalAmount.toPriceStringWithCurrency(),
+            value: transactions.totalAmount.toPriceStringWithCurrency(),
             color: theme.colorScheme.primary,
             style: titleStyle,
           ),
@@ -48,7 +49,7 @@ class TotalReport extends StatelessWidget {
           _buildReportItem(
             context,
             title: '${AppMessages.totalIncome.tr} :',
-            value: transactionProvider.totalIncome.toPriceStringWithCurrency(),
+            value: transactions.totalIncome.toPriceStringWithCurrency(),
             color: theme.colorScheme.tertiary,
             style: titleStyle,
           ),
@@ -56,7 +57,7 @@ class TotalReport extends StatelessWidget {
           _buildReportItem(
             context,
             title: '${AppMessages.totalExpense.tr} :',
-            value: transactionProvider.totalExpense.toPriceStringWithCurrency(),
+            value: transactions.totalExpense.toPriceStringWithCurrency(),
             color: theme.colorScheme.error,
             style: titleStyle,
           ),

@@ -47,6 +47,7 @@ class TransactionDatabase extends _$TransactionDatabase {
             title: row.title,
             amount: row.amount,
             isInCome: row.isInCome,
+            categoryId: row.categoryId,
           );
         }).toList(),
       );
@@ -60,6 +61,7 @@ class TransactionDatabase extends _$TransactionDatabase {
         amount: transaction.amount,
         isInCome: transaction.isInCome,
         date: transaction.date,
+        categoryId: transaction.categoryId,
       ),
     );
   }

@@ -64,8 +64,26 @@ class $TransactionTableTable extends TransactionTable
     requiredDuringInsert: false,
     defaultValue: currentDateAndTime,
   );
+  static const VerificationMeta _categoryIdMeta = const VerificationMeta(
+    'categoryId',
+  );
   @override
-  List<GeneratedColumn> get $columns => [id, title, amount, isInCome, date];
+  late final GeneratedColumn<String> categoryId = GeneratedColumn<String>(
+    'category_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    title,
+    amount,
+    isInCome,
+    date,
+    categoryId,
+  ];
   @override
   String get aliasedName => _alias ?? actualTableName;
   @override
@@ -113,6 +131,14 @@ class $TransactionTableTable extends TransactionTable
         date.isAcceptableOrUnknown(data['date']!, _dateMeta),
       );
     }
+    if (data.containsKey('category_id')) {
+      context.handle(
+        _categoryIdMeta,
+        categoryId.isAcceptableOrUnknown(data['category_id']!, _categoryIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_categoryIdMeta);
+    }
     return context;
   }
 
@@ -142,6 +168,10 @@ class $TransactionTableTable extends TransactionTable
         DriftSqlType.dateTime,
         data['${effectivePrefix}date'],
       )!,
+      categoryId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}category_id'],
+      )!,
     );
   }
 
@@ -158,12 +188,14 @@ class TransactionTableData extends DataClass
   final double amount;
   final bool isInCome;
   final DateTime date;
+  final String categoryId;
   const TransactionTableData({
     required this.id,
     required this.title,
     required this.amount,
     required this.isInCome,
     required this.date,
+    required this.categoryId,
   });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
@@ -173,6 +205,7 @@ class TransactionTableData extends DataClass
     map['amount'] = Variable<double>(amount);
     map['is_in_come'] = Variable<bool>(isInCome);
     map['date'] = Variable<DateTime>(date);
+    map['category_id'] = Variable<String>(categoryId);
     return map;
   }
 
@@ -183,6 +216,7 @@ class TransactionTableData extends DataClass
       amount: Value(amount),
       isInCome: Value(isInCome),
       date: Value(date),
+      categoryId: Value(categoryId),
     );
   }
 
@@ -197,6 +231,7 @@ class TransactionTableData extends DataClass
       amount: serializer.fromJson<double>(json['amount']),
       isInCome: serializer.fromJson<bool>(json['isInCome']),
       date: serializer.fromJson<DateTime>(json['date']),
+      categoryId: serializer.fromJson<String>(json['categoryId']),
     );
   }
   @override
@@ -208,6 +243,7 @@ class TransactionTableData extends DataClass
       'amount': serializer.toJson<double>(amount),
       'isInCome': serializer.toJson<bool>(isInCome),
       'date': serializer.toJson<DateTime>(date),
+      'categoryId': serializer.toJson<String>(categoryId),
     };
   }
 
@@ -217,12 +253,14 @@ class TransactionTableData extends DataClass
     double? amount,
     bool? isInCome,
     DateTime? date,
+    String? categoryId,
   }) => TransactionTableData(
     id: id ?? this.id,
     title: title ?? this.title,
     amount: amount ?? this.amount,
     isInCome: isInCome ?? this.isInCome,
     date: date ?? this.date,
+    categoryId: categoryId ?? this.categoryId,
   );
   TransactionTableData copyWithCompanion(TransactionTableCompanion data) {
     return TransactionTableData(
@@ -231,6 +269,9 @@ class TransactionTableData extends DataClass
       amount: data.amount.present ? data.amount.value : this.amount,
       isInCome: data.isInCome.present ? data.isInCome.value : this.isInCome,
       date: data.date.present ? data.date.value : this.date,
+      categoryId: data.categoryId.present
+          ? data.categoryId.value
+          : this.categoryId,
     );
   }
 
@@ -241,13 +282,15 @@ class TransactionTableData extends DataClass
           ..write('title: $title, ')
           ..write('amount: $amount, ')
           ..write('isInCome: $isInCome, ')
-          ..write('date: $date')
+          ..write('date: $date, ')
+          ..write('categoryId: $categoryId')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => Object.hash(id, title, amount, isInCome, date);
+  int get hashCode =>
+      Object.hash(id, title, amount, isInCome, date, categoryId);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -256,7 +299,8 @@ class TransactionTableData extends DataClass
           other.title == this.title &&
           other.amount == this.amount &&
           other.isInCome == this.isInCome &&
-          other.date == this.date);
+          other.date == this.date &&
+          other.categoryId == this.categoryId);
 }
 
 class TransactionTableCompanion extends UpdateCompanion<TransactionTableData> {
@@ -265,6 +309,7 @@ class TransactionTableCompanion extends UpdateCompanion<TransactionTableData> {
   final Value<double> amount;
   final Value<bool> isInCome;
   final Value<DateTime> date;
+  final Value<String> categoryId;
   final Value<int> rowid;
   const TransactionTableCompanion({
     this.id = const Value.absent(),
@@ -272,6 +317,7 @@ class TransactionTableCompanion extends UpdateCompanion<TransactionTableData> {
     this.amount = const Value.absent(),
     this.isInCome = const Value.absent(),
     this.date = const Value.absent(),
+    this.categoryId = const Value.absent(),
     this.rowid = const Value.absent(),
   });
   TransactionTableCompanion.insert({
@@ -280,17 +326,20 @@ class TransactionTableCompanion extends UpdateCompanion<TransactionTableData> {
     required double amount,
     required bool isInCome,
     this.date = const Value.absent(),
+    required String categoryId,
     this.rowid = const Value.absent(),
   }) : id = Value(id),
        title = Value(title),
        amount = Value(amount),
-       isInCome = Value(isInCome);
+       isInCome = Value(isInCome),
+       categoryId = Value(categoryId);
   static Insertable<TransactionTableData> custom({
     Expression<String>? id,
     Expression<String>? title,
     Expression<double>? amount,
     Expression<bool>? isInCome,
     Expression<DateTime>? date,
+    Expression<String>? categoryId,
     Expression<int>? rowid,
   }) {
     return RawValuesInsertable({
@@ -299,6 +348,7 @@ class TransactionTableCompanion extends UpdateCompanion<TransactionTableData> {
       if (amount != null) 'amount': amount,
       if (isInCome != null) 'is_in_come': isInCome,
       if (date != null) 'date': date,
+      if (categoryId != null) 'category_id': categoryId,
       if (rowid != null) 'rowid': rowid,
     });
   }
@@ -309,6 +359,7 @@ class TransactionTableCompanion extends UpdateCompanion<TransactionTableData> {
     Value<double>? amount,
     Value<bool>? isInCome,
     Value<DateTime>? date,
+    Value<String>? categoryId,
     Value<int>? rowid,
   }) {
     return TransactionTableCompanion(
@@ -317,6 +368,7 @@ class TransactionTableCompanion extends UpdateCompanion<TransactionTableData> {
       amount: amount ?? this.amount,
       isInCome: isInCome ?? this.isInCome,
       date: date ?? this.date,
+      categoryId: categoryId ?? this.categoryId,
       rowid: rowid ?? this.rowid,
     );
   }
@@ -339,6 +391,9 @@ class TransactionTableCompanion extends UpdateCompanion<TransactionTableData> {
     if (date.present) {
       map['date'] = Variable<DateTime>(date.value);
     }
+    if (categoryId.present) {
+      map['category_id'] = Variable<String>(categoryId.value);
+    }
     if (rowid.present) {
       map['rowid'] = Variable<int>(rowid.value);
     }
@@ -353,6 +408,7 @@ class TransactionTableCompanion extends UpdateCompanion<TransactionTableData> {
           ..write('amount: $amount, ')
           ..write('isInCome: $isInCome, ')
           ..write('date: $date, ')
+          ..write('categoryId: $categoryId, ')
           ..write('rowid: $rowid')
           ..write(')'))
         .toString();
@@ -379,6 +435,7 @@ typedef $$TransactionTableTableCreateCompanionBuilder =
       required double amount,
       required bool isInCome,
       Value<DateTime> date,
+      required String categoryId,
       Value<int> rowid,
     });
 typedef $$TransactionTableTableUpdateCompanionBuilder =
@@ -388,6 +445,7 @@ typedef $$TransactionTableTableUpdateCompanionBuilder =
       Value<double> amount,
       Value<bool> isInCome,
       Value<DateTime> date,
+      Value<String> categoryId,
       Value<int> rowid,
     });
 
@@ -422,6 +480,11 @@ class $$TransactionTableTableFilterComposer
 
   ColumnFilters<DateTime> get date => $composableBuilder(
     column: $table.date,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get categoryId => $composableBuilder(
+    column: $table.categoryId,
     builder: (column) => ColumnFilters(column),
   );
 }
@@ -459,6 +522,11 @@ class $$TransactionTableTableOrderingComposer
     column: $table.date,
     builder: (column) => ColumnOrderings(column),
   );
+
+  ColumnOrderings<String> get categoryId => $composableBuilder(
+    column: $table.categoryId,
+    builder: (column) => ColumnOrderings(column),
+  );
 }
 
 class $$TransactionTableTableAnnotationComposer
@@ -484,6 +552,11 @@ class $$TransactionTableTableAnnotationComposer
 
   GeneratedColumn<DateTime> get date =>
       $composableBuilder(column: $table.date, builder: (column) => column);
+
+  GeneratedColumn<String> get categoryId => $composableBuilder(
+    column: $table.categoryId,
+    builder: (column) => column,
+  );
 }
 
 class $$TransactionTableTableTableManager
@@ -528,6 +601,7 @@ class $$TransactionTableTableTableManager
                 Value<double> amount = const Value.absent(),
                 Value<bool> isInCome = const Value.absent(),
                 Value<DateTime> date = const Value.absent(),
+                Value<String> categoryId = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
               }) => TransactionTableCompanion(
                 id: id,
@@ -535,6 +609,7 @@ class $$TransactionTableTableTableManager
                 amount: amount,
                 isInCome: isInCome,
                 date: date,
+                categoryId: categoryId,
                 rowid: rowid,
               ),
           createCompanionCallback:
@@ -544,6 +619,7 @@ class $$TransactionTableTableTableManager
                 required double amount,
                 required bool isInCome,
                 Value<DateTime> date = const Value.absent(),
+                required String categoryId,
                 Value<int> rowid = const Value.absent(),
               }) => TransactionTableCompanion.insert(
                 id: id,
@@ -551,6 +627,7 @@ class $$TransactionTableTableTableManager
                 amount: amount,
                 isInCome: isInCome,
                 date: date,
+                categoryId: categoryId,
                 rowid: rowid,
               ),
           withReferenceMapper: (p0) => p0
