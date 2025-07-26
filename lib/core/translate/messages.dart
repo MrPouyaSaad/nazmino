@@ -53,4 +53,22 @@ class AppMessages {
   static const String add = 'Add';
   static const String selectedCategory = 'Selected category';
   static const String all = 'All';
+  static const String restore = 'Restore';
+  static const String restoreTransaction = 'Restore Transaction';
+  static const String confirmRestore =
+      'Are you sure you want to restore this transaction?';
+
+  static const String deleteCategory = 'Delete Category';
+  static const String confirmDeleteCategory =
+      'Are you sure you want to delete this category? All transactions in this category will be deleted as well.';
+
+  static const String aboutDescription =
+      'Nazmino is a personal finance manager that helps you track your income and expenses easily.';
+  static const String feature1 = 'Track all your transactions';
+  static const String feature2 = 'Organize by categories';
+  static const String feature3 = 'Full transaction history';
+  static const String feature4 = 'Completely offline with local database';
+
+  static const String developedBy = 'Developed by';
+  static const String pouyaDev = 'Pouya Dev';
 }

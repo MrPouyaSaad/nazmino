@@ -5,6 +5,7 @@ class EnKeys extends AppTranslationKeys {
   @override
   Map<String, String> get keys => {
     AppMessages.appName: 'Nazmino',
+    AppMessages.all: 'All',
     AppMessages.addTransaction: 'Add Transaction',
     AppMessages.editTransaction: 'Edit Transaction',
     AppMessages.deleteTransaction: 'Delete Transaction',
@@ -57,5 +58,21 @@ class EnKeys extends AppTranslationKeys {
     AppMessages.add: 'Add',
     AppMessages.selectedCategory: 'Selected category',
     AppMessages.all: 'All',
+    AppMessages.restore: 'Restore',
+    AppMessages.restoreTransaction: 'Restore Transaction',
+    AppMessages.confirmRestore:
+        'Are you sure you want to restore this transaction?',
+    AppMessages.deleteCategory: 'Delete Category',
+    AppMessages.confirmDeleteCategory:
+        'Are you sure you want to delete this category? All transactions in this category will be deleted as well.',
+
+    AppMessages.aboutDescription:
+        'Nazmino is a simple and user-friendly financial management application that helps you easily manage your income and expenses. With Nazmino, you can record financial transactions, create various categories, and get detailed financial reports. The app provides a pleasant financial management experience with its beautiful and intuitive design.',
+    AppMessages.feature1: 'Track all your transactions',
+    AppMessages.feature2: 'Add categories for better organization',
+    AppMessages.feature3: 'Full transaction history',
+    AppMessages.feature4: 'Completely offline with local database',
+    AppMessages.developedBy: 'Developed by',
+    AppMessages.pouyaDev: 'Pouya Dev',
   };
 }

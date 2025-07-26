@@ -1,25 +1,29 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:nazmino/core/translate/messages.dart';
 import 'package:nazmino/data/database/transaction_cat_db.dart';
 import 'package:nazmino/model/transaction.dart';
 
 const String defaultCategoryId = 'default_category_123';
-final _defaultCategory = TransactionCategory(
-  id: defaultCategoryId,
-  name: 'Default',
-);
+// final _defaultCategory = TransactionCategory(
+//   id: defaultCategoryId,
+//   name: AppMessages.all.tr,
+// );
 
 class CategoryProvider extends ChangeNotifier {
   final TransactionCatDb _db = TransactionCatDb();
-  final List<TransactionCategory> _categories = [_defaultCategory];
+  final List<TransactionCategory> _categories = [];
 
   List<TransactionCategory> get categories => _categories;
+
+  TransactionCategory get _defaultCategory =>
+      TransactionCategory(id: defaultCategoryId, name: AppMessages.all.tr);
 
   Future<void> loadCategories() async {
     final defaultCatExists = await _db.categoryExists(defaultCategoryId);
 
-    // 2. اگر وجود نداشت، آن را ایجاد کنید
     if (!defaultCatExists) {
       await _db.insertTransactionCat(_defaultCategory);
     }
@@ -28,6 +32,9 @@ class CategoryProvider extends ChangeNotifier {
 
     _categories.clear();
     _categories.addAll(dbCategories);
+    if (!_categories.any((c) => c.id == defaultCategoryId)) {
+      _categories.insert(0, _defaultCategory);
+    }
     log('Category Count: ${_categories.length}');
 
     notifyListeners();

@@ -167,7 +167,11 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
                           items: widget.categories.map((category) {
                             return DropdownMenuItem<TransactionCategory>(
                               value: category,
-                              child: Text(category.name),
+                              child: Text(
+                                category.name == 'All'
+                                    ? AppMessages.all.tr
+                                    : category.name,
+                              ),
                             );
                           }).toList(),
                           onChanged: (category) {

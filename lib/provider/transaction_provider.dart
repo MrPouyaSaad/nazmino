@@ -62,6 +62,16 @@ class TransactionProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  /// Delete transactions by category.
+  void deleteTransactionsByCategory(String categoryId) async {
+    await _db.deleteTransactionsByCategory(categoryId);
+    log('Transactions deleted for category: $categoryId');
+    _transactions.removeWhere(
+      (transaction) => transaction.categoryId == categoryId,
+    );
+    notifyListeners();
+  }
+
   /// Get the total amount of all transactions.
   /// This method calculates the total amount of all transactions.
   /// @return The total amount of all transactions.

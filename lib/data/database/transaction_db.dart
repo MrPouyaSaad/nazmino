@@ -85,6 +85,13 @@ class TransactionDatabase extends _$TransactionDatabase {
     );
   }
 
+  // Delete transactions by category
+  Future<int> deleteTransactionsByCategory(String categoryId) {
+    return (delete(
+      transactionTable,
+    )..where((t) => t.categoryId.equals(categoryId))).go();
+  }
+
   //remove all transactions
   Future<int> deleteAllTransactions() {
     return delete(transactionTable).go();

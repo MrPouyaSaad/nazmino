@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:nazmino/core/translate/messages.dart' show AppMessages;
@@ -9,11 +10,14 @@ class TransactionTile extends StatelessWidget {
   final VoidCallback onTap;
   final VoidCallback onDelete;
 
+  final bool isFromHistory;
+
   const TransactionTile({
     super.key,
     required this.transaction,
     required this.onTap,
     required this.onDelete,
+    this.isFromHistory = false,
   });
 
   void _confirmDelete(BuildContext context) {
@@ -81,29 +85,70 @@ class TransactionTile extends StatelessWidget {
               color: theme.colorScheme.onSurface.withOpacity(0.6),
             ),
           ),
-          trailing: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.end,
+          trailing: Row(
+            mainAxisSize: MainAxisSize.min,
             children: [
-              Text(
-                transaction.amount.toPriceStringWithCurrency(),
-                style: theme.textTheme.bodyMedium?.copyWith(
-                  fontWeight: FontWeight.bold,
-                  color: transaction.isInCome
-                      ? theme.colorScheme.tertiary
-                      : theme.colorScheme.error,
-                ),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  Text(
+                    transaction.amount.toPriceStringWithCurrency(),
+                    style: theme.textTheme.bodyMedium?.copyWith(
+                      fontWeight: FontWeight.bold,
+                      color: transaction.isInCome
+                          ? theme.colorScheme.tertiary
+                          : theme.colorScheme.error,
+                    ),
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    transaction.id.substring(0, 10),
+                    style: theme.textTheme.bodySmall?.copyWith(
+                      color: theme.colorScheme.onSurface.withOpacity(0.4),
+                    ),
+                  ),
+                ],
               ),
-              const SizedBox(height: 4),
-              Text(
-                transaction.id.substring(0, 10),
-                style: theme.textTheme.bodySmall?.copyWith(
-                  color: theme.colorScheme.onSurface.withOpacity(0.4),
+              if (isFromHistory) ...[
+                const SizedBox(width: 8),
+                IconButton(
+                  onPressed: () => _restoreFromHistory(context),
+                  icon: Icon(
+                    CupertinoIcons.arrow_counterclockwise,
+                    color: theme.colorScheme.onSurface,
+                  ),
                 ),
-              ),
+              ],
             ],
           ),
         ),
+      ),
+    );
+  }
+
+  void _restoreFromHistory(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (_) => AlertDialog(
+        title: Text(AppMessages.restoreTransaction.tr),
+        content: Text(AppMessages.confirmRestore.tr),
+        actions: [
+          TextButton(
+            onPressed: Navigator.of(context).pop,
+            child: Text(AppMessages.cancel.tr),
+          ),
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+              onTap();
+            },
+            child: Text(
+              AppMessages.restore.tr,
+              style: TextStyle(color: Theme.of(context).colorScheme.primary),
+            ),
+          ),
+        ],
       ),
     );
   }

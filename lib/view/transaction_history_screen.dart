@@ -36,19 +36,17 @@ class _TransactionsListScreenState
     if (mounted) setState(() => _isLoading = false);
   }
 
-  void _showAddTransaction([transaction]) {
-    final provider = Provider.of<CategoryProvider>(context, listen: false);
-    showModalBottomSheet(
-      context: context,
-      enableDrag: true,
-      isDismissible: true,
-      isScrollControlled: true,
-      showDragHandle: true,
-      builder: (_) => AddTransactionScreen(
-        transaction: transaction,
-        categories: provider.categories,
-      ),
+  void _restoreTransaction([transaction]) {
+    if (transaction == null) return;
+
+    final provider = Provider.of<TransactionProvider>(context, listen: false);
+    final historyProvider = Provider.of<TransactionHistoryProvider>(
+      context,
+      listen: false,
     );
+
+    provider.addTransaction(transaction: transaction);
+    historyProvider.removeTransaction(transaction);
   }
 
   void _showDeleteAllConfirmation(BuildContext context) {
@@ -96,8 +94,9 @@ class _TransactionsListScreenState
                 _buildHeader(context),
                 ...transactions.reversed.map(
                   (t) => TransactionTile(
+                    isFromHistory: true,
                     transaction: t,
-                    onTap: () => _showAddTransaction(t),
+                    onTap: () => _restoreTransaction(t),
                     onDelete: () => provider.removeTransaction(t),
                   ),
                 ),
@@ -111,6 +110,7 @@ class _TransactionsListScreenState
       padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+
         children: [
           Text(
             '${AppMessages.transactions.tr} ${AppMessages.history.tr}',

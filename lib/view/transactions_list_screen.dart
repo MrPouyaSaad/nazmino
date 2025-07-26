@@ -8,6 +8,7 @@ import 'package:nazmino/provider/category_provider.dart';
 import 'package:nazmino/provider/transaction_history_provider.dart';
 import 'package:nazmino/provider/transaction_provider.dart';
 import 'package:nazmino/service/lang_load_service.dart';
+import 'package:nazmino/view/about_app_screen.dart';
 import 'package:nazmino/widgets/transaction_tile.dart';
 import 'package:provider/provider.dart';
 import 'package:nazmino/widgets/total_report.dart';
@@ -28,6 +29,7 @@ class _TransactionsListScreenState extends State<TransactionsListScreen> {
   @override
   void initState() {
     super.initState();
+
     _loadTransactions();
   }
 
@@ -105,24 +107,28 @@ class _TransactionsListScreenState extends State<TransactionsListScreen> {
   }
 
   @override
-  @override
   Widget build(BuildContext context) {
     final provider = Provider.of<TransactionProvider>(context);
-    final catProvider = Provider.of<CategoryProvider>(context);
+    final historyProvider = Provider.of<TransactionHistoryProvider>(context);
 
     final themeController = Get.find<ThemeController>();
 
-    // فیلتر کردن تراکنش‌ها بر اساس دسته‌بندی انتخاب شده
+    // filter transactions based on selected category
     final filteredTransactions =
         _selectedCategory == null || _selectedCategory?.id == defaultCategoryId
-        ? provider
-              .transactions // نمایش همه اگر پیش‌فرض انتخاب شده یا هیچکدام
+        ? provider.transactions
         : provider.transactions
               .where((t) => t.categoryId == _selectedCategory?.id)
               .toList();
 
     return Scaffold(
-      appBar: AppBar(title: Text(AppMessages.appName.tr), centerTitle: true),
+      appBar: AppBar(
+        title: Text(
+          AppMessages.appName.tr,
+          style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold),
+        ),
+        centerTitle: true,
+      ),
       drawer: _buildAppDrawer(context, themeController),
       floatingActionButton: _isLoading
           ? null
@@ -149,7 +155,11 @@ class _TransactionsListScreenState extends State<TransactionsListScreen> {
                             (t) => TransactionTile(
                               transaction: t,
                               onTap: () => _showAddTransaction(t),
-                              onDelete: () => provider.removeTransaction(t),
+                              onDelete: () {
+                                historyProvider.addTransaction(transaction: t);
+
+                                provider.removeTransaction(t);
+                              },
                             ),
                           )
                           .toList(),
@@ -169,13 +179,6 @@ class _TransactionsListScreenState extends State<TransactionsListScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0),
-          child: Text(
-            '${AppMessages.selectedCategory.tr}: ${_selectedCategory?.name ?? AppMessages.all.tr}',
-            style: theme.textTheme.bodyMedium,
-          ),
-        ),
         SizedBox(
           height: 50,
           child: ListView.separated(
@@ -187,31 +190,81 @@ class _TransactionsListScreenState extends State<TransactionsListScreen> {
                 return _buildAddCategoryButton(context);
               }
               final category = categories[index];
-              return ChoiceChip(
-                chipAnimationStyle: ChipAnimationStyle(
-                  enableAnimation: const AnimationStyle(
-                    curve: Curves.easeInOut,
-                    duration: Duration(milliseconds: 250),
+              return InkWell(
+                onLongPress: () => index != 0 && index != categories.length
+                    ? showDialog(
+                        context: context,
+                        builder: (context) {
+                          return AlertDialog(
+                            title: Text(AppMessages.deleteCategory.tr),
+                            content: Text(
+                              AppMessages.confirmDeleteCategory.trParams({
+                                'category': category.name,
+                              }),
+                            ),
+                            actions: [
+                              TextButton(
+                                onPressed: () => Navigator.pop(context),
+                                child: Text(AppMessages.cancel.tr),
+                              ),
+                              ElevatedButton(
+                                onPressed: () {
+                                  _selectedCategory = categories.first;
+                                  final transactions =
+                                      Provider.of<TransactionProvider>(
+                                        context,
+                                        listen: false,
+                                      ).transactions;
+                                  Provider.of<TransactionHistoryProvider>(
+                                    context,
+                                    listen: false,
+                                  ).addTransactionFromCategory(
+                                    category.id,
+                                    transactions,
+                                  );
+                                  Provider.of<CategoryProvider>(
+                                    context,
+                                    listen: false,
+                                  ).removeCategory(category.id);
+                                  Provider.of<TransactionProvider>(
+                                    context,
+                                    listen: false,
+                                  ).deleteTransactionsByCategory(category.id);
+                                  Navigator.pop(context);
+                                },
+                                child: Text(AppMessages.delete.tr),
+                              ),
+                            ],
+                          );
+                        },
+                      )
+                    : null,
+                child: ChoiceChip(
+                  chipAnimationStyle: ChipAnimationStyle(
+                    enableAnimation: const AnimationStyle(
+                      curve: Curves.easeInOut,
+                      duration: Duration(milliseconds: 250),
+                    ),
+                    selectAnimation: const AnimationStyle(
+                      curve: Curves.easeOutBack,
+                      duration: Duration(milliseconds: 300),
+                    ),
                   ),
-                  selectAnimation: const AnimationStyle(
-                    curve: Curves.easeOutBack,
-                    duration: Duration(milliseconds: 300),
-                  ),
-                ),
 
-                showCheckmark: false,
-                label: Text(category.name),
-                selected: _selectedCategory?.id == category.id,
-                onSelected: (selected) {
-                  setState(() {
-                    _selectedCategory = selected ? category : null;
-                  });
-                },
-                selectedColor: theme.colorScheme.primary.withOpacity(0.2),
-                labelStyle: TextStyle(
-                  color: _selectedCategory?.id == category.id
-                      ? theme.colorScheme.primary
-                      : theme.colorScheme.onSurface,
+                  showCheckmark: false,
+                  label: Text(index == 0 ? AppMessages.all.tr : category.name),
+                  selected: _selectedCategory?.id == category.id,
+                  onSelected: (selected) {
+                    setState(() {
+                      _selectedCategory = selected ? category : null;
+                    });
+                  },
+                  selectedColor: theme.colorScheme.primary.withOpacity(0.2),
+                  labelStyle: TextStyle(
+                    color: _selectedCategory?.id == category.id
+                        ? theme.colorScheme.primary
+                        : theme.colorScheme.onSurface,
+                  ),
                 ),
               );
             },
@@ -274,8 +327,8 @@ class _TransactionsListScreenState extends State<TransactionsListScreen> {
     BuildContext context,
     ThemeController themeController,
   ) {
-    return Drawer(
-      child: SafeArea(
+    return SafeArea(
+      child: Drawer(
         child: Column(
           children: [
             Container(
@@ -376,7 +429,7 @@ class _TransactionsListScreenState extends State<TransactionsListScreen> {
                     icon: Icons.info_outline,
                     text: AppMessages.aboutApp.tr,
                     onTap: () {
-                      // Navigate to about screen
+                      Get.to(() => const AboutAppScreen());
                     },
                   ),
                 ],

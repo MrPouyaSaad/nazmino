@@ -56,6 +56,19 @@ class TransactionHistoryProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  // add transaction from category
+  void addTransactionFromCategory(
+    String categoryId,
+    List<Transaction> transactions,
+  ) async {
+    await _db.insertTransactionFromCategory(categoryId, transactions);
+    final dbTransactions = await _db.getAllTransactions();
+    log('Transaction added from category: ${dbTransactions.last.title}');
+    log('Transaction Count: ${dbTransactions.length}');
+    _transactionsHistory.add(dbTransactions.last);
+    notifyListeners();
+  }
+
   /// Get the total amount of all transactions.
   /// This method calculates the total amount of all transactions.
   /// @return The total amount of all transactions.

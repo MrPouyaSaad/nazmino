@@ -8,6 +8,7 @@ class FaKeys extends AppTranslationKeys {
     AppMessages.addTransaction: 'افزودن تراکنش',
     AppMessages.editTransaction: 'ویرایش تراکنش',
     AppMessages.deleteTransaction: 'حذف تراکنش',
+    AppMessages.all: 'همه',
     AppMessages.confirmDelete:
         'آیا مطمئن هستید که می‌خواهید این تراکنش را حذف کنید؟',
     AppMessages.transactionAdded: 'تراکنش با موفقیت اضافه شد!',
@@ -47,7 +48,7 @@ class FaKeys extends AppTranslationKeys {
     AppMessages.enterPositiveAmount: 'لطفاً یک "مبلغ" مثبت وارد کنید',
     AppMessages.enterValidTitle: 'لطفاً یک "عنوان" معتبر وارد کنید',
     AppMessages.history: 'تاریخچه',
-    AppMessages.aboutApp: 'درباره اپ',
+    AppMessages.aboutApp: 'درباره اپلیکیشن',
     AppMessages.language: "زبان",
     AppMessages.darkMode: 'حالت تاریک',
     AppMessages.defaultt: 'پیش‌فرض',
@@ -59,5 +60,22 @@ class FaKeys extends AppTranslationKeys {
     AppMessages.add: 'افزودن',
     AppMessages.selectedCategory: 'دسته‌بندی انتخاب شده',
     AppMessages.all: 'همه',
+    AppMessages.restore: 'بازیابی',
+    AppMessages.restoreTransaction: 'بازیابی تراکنش',
+    AppMessages.confirmRestore:
+        'آیا مطمئن هستید که می‌خواهید این تراکنش را بازیابی کنید؟',
+    AppMessages.deleteCategory: 'حذف دسته‌بندی',
+    AppMessages.confirmDeleteCategory:
+        'آیا مطمئن هستید که می‌خواهید این دسته‌بندی را حذف کنید؟ همه تراکنش‌های این دسته‌بندی نیز حذف خواهند شد.',
+    AppMessages.aboutDescription:
+        'نظمینو یک اپلیکیشن مدیریت مالی ساده و کاربرپسند است که به شما کمک می‌کند تا درآمدها و هزینه‌های خود را به راحتی مدیریت کنید. با نظمینو می‌توانید تراکنش‌های مالی خود را ثبت کنید، دسته‌بندی‌های مختلف ایجاد کنید و گزارش‌های مالی دقیق دریافت کنید. این اپلیکیشن با طراحی زیبا و کاربرپسند، تجربه‌ای لذت‌بخش از مدیریت مالی را برای شما فراهم می‌کند.',
+
+    AppMessages.feature1: 'پیگیری تمام تراکنش‌های مالی',
+    AppMessages.feature2: 'دسته‌بندی و سازماندهی هزینه‌ها',
+    AppMessages.feature3: 'تاریخچه کامل تراکنش‌ها',
+    AppMessages.feature4: 'کارکرد کاملاً آفلاین با پایگاه داده محلی',
+
+    AppMessages.developedBy: 'توسعه داده شده توسط',
+    AppMessages.pouyaDev: 'پویا توسعه',
   };
 }

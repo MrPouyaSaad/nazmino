@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:nazmino/data/database/tables/transaction_history_table.dart';
+import 'package:nazmino/provider/transaction_provider.dart';
 // ignore: depend_on_referenced_packages
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
@@ -64,6 +65,27 @@ class TransactionHistoryDatabase extends _$TransactionHistoryDatabase {
         categoryId: transaction.categoryId,
       ),
     );
+  }
+
+  // Insert a transaction from category
+  insertTransactionFromCategory(
+    String categoryId,
+    List<Transaction> transactions,
+  ) {
+    for (var transaction in transactions) {
+      if (transaction.categoryId == categoryId) {
+        return into(transactionHistoryTable).insert(
+          TransactionHistoryTableData(
+            id: transaction.id,
+            title: transaction.title,
+            amount: transaction.amount,
+            isInCome: transaction.isInCome,
+            date: transaction.date,
+            categoryId: transaction.categoryId,
+          ),
+        );
+      }
+    }
   }
 
   //remove a transaction
