@@ -24,7 +24,7 @@ class TotalReport extends StatelessWidget {
       padding: const EdgeInsets.all(16.0),
       margin: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 16.0),
       decoration: BoxDecoration(
-        color: theme.cardColor,
+        color: isDark ? Color(0xFF121212) : theme.cardColor,
         borderRadius: BorderRadius.circular(12.0),
         boxShadow: [
           if (!isDark)

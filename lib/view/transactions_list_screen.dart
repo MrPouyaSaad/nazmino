@@ -122,13 +122,13 @@ class _TransactionsListScreenState extends State<TransactionsListScreen> {
               .toList();
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          AppMessages.appName.tr,
-          style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold),
-        ),
-        centerTitle: true,
-      ),
+      // appBar: AppBar(
+      //   title: Text(
+      //     AppMessages.appName.tr,
+      //     style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold),
+      //   ),
+      //   centerTitle: true,
+      // ),
       drawer: _buildAppDrawer(context, themeController),
       floatingActionButton: _isLoading
           ? null
@@ -138,35 +138,70 @@ class _TransactionsListScreenState extends State<TransactionsListScreen> {
             ),
       body: _isLoading
           ? const Center(child: CupertinoActivityIndicator(radius: 12))
-          : Column(
-              children: [
-                TotalReport(transactions: filteredTransactions),
-                _buildCategorySelector(context),
-                if (filteredTransactions.isEmpty)
-                  Expanded(
-                    child: Center(child: Text(AppMessages.noTransactions.tr)),
-                  )
-                else ...[
-                  _buildHeader(context, filteredTransactions),
-                  Expanded(
-                    child: ListView(
-                      children: filteredTransactions.reversed
-                          .map(
-                            (t) => TransactionTile(
-                              transaction: t,
-                              onTap: () => _showAddTransaction(t),
-                              onDelete: () {
-                                historyProvider.addTransaction(transaction: t);
+          : NestedScrollView(
+              headerSliverBuilder: (context, innerBoxIsScrolled) => [
+                SliverAppBar(
+                  expandedHeight: MediaQuery.of(context).size.width * 0.525,
 
-                                provider.removeTransaction(t);
-                              },
-                            ),
-                          )
-                          .toList(),
+                  title: Text(
+                    AppMessages.appName.tr,
+                    style: TextStyle(
+                      fontSize: 20,
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
                     ),
                   ),
-                ],
+                  flexibleSpace: FlexibleSpaceBar(
+                    background: Container(
+                      padding: const EdgeInsets.only(top: kToolbarHeight),
+                      width: double.infinity,
+
+                      alignment: Alignment.topCenter,
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          const SizedBox(height: 8),
+                          TotalReport(transactions: filteredTransactions),
+                        ],
+                      ),
+                    ),
+                  ),
+                  floating: true,
+                  pinned: true,
+                  snap: true,
+                  centerTitle: true,
+                ),
               ],
+              body: CustomScrollView(
+                slivers: [
+                  SliverToBoxAdapter(child: _buildCategorySelector(context)),
+                  if (filteredTransactions.isEmpty)
+                    SliverFillRemaining(
+                      child: Center(child: Text(AppMessages.noTransactions.tr)),
+                    )
+                  else ...[
+                    SliverToBoxAdapter(
+                      child: _buildHeader(context, filteredTransactions),
+                    ),
+                    SliverList(
+                      delegate: SliverChildBuilderDelegate((context, index) {
+                        final t = filteredTransactions.reversed.toList()[index];
+                        return TransactionTile(
+                          transaction: t,
+                          onTap: () => _showAddTransaction(t),
+                          onDelete: () {
+                            historyProvider.addTransaction(transaction: t);
+                            provider.removeTransaction(t);
+                          },
+                        );
+                      }, childCount: filteredTransactions.length),
+                    ),
+                    SliverToBoxAdapter(
+                      child: SizedBox(height: 88), // فضای زیر FAB
+                    ),
+                  ],
+                ],
+              ),
             ),
     );
   }
@@ -183,7 +218,7 @@ class _TransactionsListScreenState extends State<TransactionsListScreen> {
           height: 50,
           child: ListView.separated(
             scrollDirection: Axis.horizontal,
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+            padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
             itemCount: categories.length + 1,
             itemBuilder: (context, index) {
               if (index == categories.length) {

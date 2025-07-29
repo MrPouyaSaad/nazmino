@@ -23,7 +23,7 @@ class AppThemes {
         onSurface: Color(0xFF0C2A43),
         tertiary: Color(0xff2E7D32),
       ),
-      scaffoldBackgroundColor: const Color(0xFFF5F7FA),
+      scaffoldBackgroundColor: const Color.fromARGB(255, 251, 252, 255),
       appBarTheme: const AppBarTheme(
         backgroundColor: Color(0xFF0C2A43),
         foregroundColor: Colors.white,

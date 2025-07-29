@@ -2,12 +2,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:nazmino/core/translate/messages.dart';
-import 'package:nazmino/provider/category_provider.dart';
 import 'package:nazmino/provider/transaction_history_provider.dart';
 import 'package:nazmino/provider/transaction_provider.dart';
 import 'package:nazmino/widgets/transaction_tile.dart';
 import 'package:provider/provider.dart';
-import 'package:nazmino/view/add_transaction_screen.dart';
 
 class TransactionsHistoryListScreen extends StatefulWidget {
   const TransactionsHistoryListScreen({super.key});

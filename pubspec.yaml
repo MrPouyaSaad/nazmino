@@ -42,6 +42,7 @@ dependencies:
   drift_flutter: ^0.2.4
   get: ^4.7.2
   shared_preferences: ^2.5.3
+  rename: ^3.1.0
  
 
 dev_dependencies:

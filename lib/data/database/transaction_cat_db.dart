@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:drift/drift.dart';
 import 'package:drift/native.dart';
-import 'package:flutter/material.dart' hide Table;
 import 'package:nazmino/model/transaction.dart';
 import 'package:path/path.dart' as p;
 import 'package:nazmino/data/database/tables/transaction_cat_table.dart';
