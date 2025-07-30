@@ -60,7 +60,7 @@ class _TransactionsListScreenState
           ),
           TextButton(
             onPressed: () {
-              Provider.of<TransactionProvider>(
+              Provider.of<TransactionHistoryProvider>(
                 context,
                 listen: false,
               ).clearTransactions();
