@@ -1,0 +1,78 @@
+import 'package:nazmino/core/translate/messages.dart';
+import 'package:nazmino/core/translate/translate.dart';
+
+class EnKeys extends AppTranslationKeys {
+  @override
+  Map<String, String> get keys => {
+    AppMessages.appName: 'Nazmino',
+    AppMessages.all: 'All',
+    AppMessages.addTransaction: 'Add Transaction',
+    AppMessages.editTransaction: 'Edit Transaction',
+    AppMessages.deleteTransaction: 'Delete Transaction',
+    AppMessages.confirmDelete:
+        'Are you sure you want to delete this transaction?',
+    AppMessages.transactionAdded: 'Transaction added successfully!',
+    AppMessages.transactionUpdated: 'Transaction updated successfully!',
+    AppMessages.transactionDeleted: 'Transaction deleted successfully!',
+    AppMessages.noTransactions: 'No transactions available.',
+    AppMessages.deleteAllTransactions: 'Delete All Transactions',
+    AppMessages.confirmDeleteAll:
+        'Are you sure you want to delete all transactions?',
+    AppMessages.transactionsCleared: 'All transactions cleared successfully!',
+    AppMessages.income: 'Income',
+    AppMessages.expense: 'Expense',
+    AppMessages.amount: 'Amount',
+    AppMessages.title: 'Title',
+    AppMessages.date: 'Date',
+    AppMessages.totalAmount: 'Total Amount',
+    AppMessages.totalIncome: 'Total Income',
+    AppMessages.totalExpense: 'Total Expense',
+    AppMessages.cancel: 'Cancel',
+    AppMessages.delete: 'Delete',
+    AppMessages.deleteAll: 'Delete All',
+    AppMessages.confirm: 'Confirm',
+    AppMessages.ok: 'OK',
+    AppMessages.error: 'Error',
+    AppMessages.success: 'Success',
+    AppMessages.loading: 'Loading',
+    AppMessages.noData: 'No Data Available',
+    AppMessages.somethingWentWrong: 'Something went wrong!',
+    AppMessages.transaction: 'Transaction',
+    AppMessages.transactions: 'Transactions',
+    AppMessages.save: 'Save',
+    AppMessages.enterAmount: 'Please enter an "Amount"',
+    AppMessages.enterTitle: 'Please enter a "Title"',
+    AppMessages.enterValidAmount: 'Please enter a valid "Amount"',
+    AppMessages.enterPositiveAmount: 'Please enter a positive "Amount"',
+    AppMessages.enterValidTitle: 'Please enter a valid "Title"',
+    AppMessages.history: 'History',
+    AppMessages.aboutApp: 'About App',
+    AppMessages.language: "Language",
+    AppMessages.darkMode: 'Dark mode',
+    AppMessages.defaultt: 'Default',
+    AppMessages.selectCategory: 'Select Category',
+    AppMessages.category: 'Category',
+    AppMessages.addCategory: 'Add Category',
+    AppMessages.newCategory: 'New Category',
+    AppMessages.categoryName: 'Category Name',
+    AppMessages.add: 'Add',
+    AppMessages.selectedCategory: 'Selected category',
+    AppMessages.all: 'All',
+    AppMessages.restore: 'Restore',
+    AppMessages.restoreTransaction: 'Restore Transaction',
+    AppMessages.confirmRestore:
+        'Are you sure you want to restore this transaction?',
+    AppMessages.deleteCategory: 'Delete Category',
+    AppMessages.confirmDeleteCategory:
+        'Are you sure you want to delete this category? All transactions in this category will be deleted as well.',
+
+    AppMessages.aboutDescription:
+        'Nazmino is a simple and user-friendly financial management application that helps you easily manage your income and expenses. With Nazmino, you can record financial transactions, create various categories, and get detailed financial reports. The app provides a pleasant financial management experience with its beautiful and intuitive design.',
+    AppMessages.feature1: 'Track all your transactions',
+    AppMessages.feature2: 'Add categories for better organization',
+    AppMessages.feature3: 'Full transaction history',
+    AppMessages.feature4: 'Completely offline with local database',
+    AppMessages.developedBy: 'Developed by',
+    AppMessages.pouyaDev: 'Pouya Dev',
+  };
+}
