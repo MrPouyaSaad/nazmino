@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:nazmino/controller/theme_controller.dart';
+import 'package:nazmino/core/extensions/app_version.dart';
 import 'package:nazmino/core/theme/theme.dart';
 import 'package:nazmino/core/translate/translate.dart';
 import 'package:nazmino/provider/category_provider.dart';
@@ -14,6 +15,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Get.putAsync(() => LocaleService().init());
   Get.put(ThemeController());
+  await AppVersion.init();
   runApp(
     // Use MultiProvider to provide the TransactionProvider to the widget tree
     // This allows us to access the TransactionProvider in any widget below it

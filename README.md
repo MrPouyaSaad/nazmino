@@ -1,16 +1,29 @@
-# nazmino
+# Nazmino
 
-A new Flutter project.
+Nazmino is a simple, modern, and user-friendly **personal finance tracking** app built with Flutter.
 
-## Getting Started
+It helps users keep track of their income and expenses, categorize their transactions, and visualize spending with summary reports.
 
-This project is a starting point for a Flutter application.
+---
 
-A few resources to get you started if this is your first Flutter project:
+##  Features
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+- Add, edit, and delete transactions
+- Categorize income and expenses
+- View total reports and daily breakdowns
+- Filter transactions by category
+- Dark mode support
+- Multilingual (English & فارسی)
+- Persistent storage with SQLite (`drift`)
+- Transaction history archive
+- Custom categories management
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+---
+
+##  Getting Started
+
+To run this project locally:
+
+```bash
+flutter pub get
+flutter run

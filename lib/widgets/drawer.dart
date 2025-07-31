@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:nazmino/controller/theme_controller.dart';
+import 'package:nazmino/core/extensions/app_version.dart';
 import 'package:nazmino/core/translate/messages.dart';
 import 'package:nazmino/service/lang_load_service.dart';
 import 'package:nazmino/view/about_app_screen.dart';
@@ -125,7 +126,7 @@ class AppDrawer extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.all(12.0),
               child: Text(
-                'Nazmino v1.0.0',
+                'Nazmino ${AppVersion.versionNumber}',
                 style: TextStyle(color: Colors.grey),
               ),
             ),

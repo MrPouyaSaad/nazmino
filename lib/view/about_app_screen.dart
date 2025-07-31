@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:nazmino/core/extensions/app_version.dart';
 import 'package:nazmino/core/translate/messages.dart';
-import 'package:nazmino/controller/theme_controller.dart';
 
 class AboutAppScreen extends StatelessWidget {
   const AboutAppScreen({super.key});
@@ -10,7 +10,6 @@ class AboutAppScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final isDark = Get.find<ThemeController>().isDarkMode.value;
 
     return Scaffold(
       appBar: AppBar(title: Text(AppMessages.aboutApp.tr), centerTitle: true),
@@ -46,7 +45,7 @@ class AboutAppScreen extends StatelessWidget {
             ),
             const SizedBox(height: 8),
             Text(
-              'v1.0.0',
+              AppVersion.version,
               style: theme.textTheme.bodySmall?.copyWith(
                 color: theme.colorScheme.onSurface.withOpacity(0.6),
               ),

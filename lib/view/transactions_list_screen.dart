@@ -9,6 +9,7 @@ import 'package:nazmino/provider/transaction_history_provider.dart';
 import 'package:nazmino/provider/transaction_provider.dart';
 import 'package:nazmino/service/lang_load_service.dart';
 import 'package:nazmino/view/about_app_screen.dart';
+import 'package:nazmino/widgets/drawer.dart';
 import 'package:nazmino/widgets/transaction_tile.dart';
 import 'package:provider/provider.dart';
 import 'package:nazmino/widgets/total_report.dart';
@@ -111,8 +112,6 @@ class _TransactionsListScreenState extends State<TransactionsListScreen> {
     final provider = Provider.of<TransactionProvider>(context);
     final historyProvider = Provider.of<TransactionHistoryProvider>(context);
 
-    final themeController = Get.find<ThemeController>();
-
     // filter transactions based on selected category
     final filteredTransactions =
         _selectedCategory == null || _selectedCategory?.id == defaultCategoryId
@@ -129,7 +128,7 @@ class _TransactionsListScreenState extends State<TransactionsListScreen> {
       //   ),
       //   centerTitle: true,
       // ),
-      drawer: _buildAppDrawer(context, themeController),
+      drawer: AppDrawer(),
       floatingActionButton: _isLoading
           ? null
           : FloatingActionButton(
@@ -139,6 +138,9 @@ class _TransactionsListScreenState extends State<TransactionsListScreen> {
       body: _isLoading
           ? const Center(child: CupertinoActivityIndicator(radius: 12))
           : NestedScrollView(
+              physics: filteredTransactions.isEmpty
+                  ? NeverScrollableScrollPhysics()
+                  : BouncingScrollPhysics(),
               headerSliverBuilder: (context, innerBoxIsScrolled) => [
                 SliverAppBar(
                   expandedHeight: MediaQuery.of(context).size.width * 0.525,
@@ -166,6 +168,7 @@ class _TransactionsListScreenState extends State<TransactionsListScreen> {
                       ),
                     ),
                   ),
+
                   floating: true,
                   pinned: true,
                   snap: true,
@@ -217,6 +220,7 @@ class _TransactionsListScreenState extends State<TransactionsListScreen> {
         SizedBox(
           height: 50,
           child: ListView.separated(
+            physics: BouncingScrollPhysics(),
             scrollDirection: Axis.horizontal,
             padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
             itemCount: categories.length + 1,
@@ -355,146 +359,6 @@ class _TransactionsListScreenState extends State<TransactionsListScreen> {
           ],
         );
       },
-    );
-  }
-
-  Widget _buildAppDrawer(
-    BuildContext context,
-    ThemeController themeController,
-  ) {
-    return SafeArea(
-      child: Drawer(
-        child: Column(
-          children: [
-            Container(
-              padding: const EdgeInsets.all(16),
-              width: double.infinity,
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  colors: [
-                    Theme.of(context).colorScheme.primary,
-                    Theme.of(context).colorScheme.primary.withOpacity(0.8),
-                  ],
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                ),
-              ),
-              child: Row(
-                children: [
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(8),
-                    child: Image.asset(
-                      'assets/images/logo.png',
-                      width: 50,
-                      height: 50,
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                  const SizedBox(width: 16),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        AppMessages.appName.tr,
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      // Text(
-                      //   AppMessages.appSlogan.tr,
-                      //   style: TextStyle(
-                      //     color: Colors.white70,
-                      //     fontSize: 14,
-                      //   ),
-                      // ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-
-            Expanded(
-              child: ListView(
-                padding: const EdgeInsets.only(top: 8),
-                children: [
-                  _buildDrawerItem(
-                    icon: Icons.history,
-                    text: AppMessages.history.tr,
-                    onTap: () {
-                      Navigator.pop(context);
-                      Get.to(() => const TransactionsHistoryListScreen());
-                    },
-                  ),
-                  Obx(
-                    () => SwitchListTile(
-                      secondary: Icon(
-                        themeController.isDarkMode.value
-                            ? Icons.dark_mode
-                            : Icons.light_mode,
-                      ),
-                      title: Text(AppMessages.darkMode.tr),
-                      value: themeController.isDarkMode.value,
-                      onChanged: (_) => themeController.toggleTheme(),
-                    ),
-                  ),
-                  ListTile(
-                    leading: const Icon(Icons.language),
-                    title: Text(AppMessages.language.tr),
-                    trailing: DropdownButton<String>(
-                      value: Get.locale?.languageCode ?? 'en',
-                      items: const [
-                        DropdownMenuItem(value: 'en', child: Text('English')),
-                        DropdownMenuItem(value: 'fa', child: Text('فارسی')),
-                      ],
-                      onChanged: (String? languageCode) {
-                        if (languageCode == null) return;
-                        final localeService = Get.find<LocaleService>();
-                        if (languageCode == 'fa') {
-                          localeService.changeLocale('fa');
-                        } else {
-                          localeService.changeLocale('en');
-                        }
-                      },
-                      underline: const SizedBox(),
-                    ),
-                  ),
-                  _buildDrawerItem(
-                    icon: Icons.info_outline,
-                    text: AppMessages.aboutApp.tr,
-                    onTap: () {
-                      Get.to(() => const AboutAppScreen());
-                    },
-                  ),
-                ],
-              ),
-            ),
-
-            Padding(
-              padding: const EdgeInsets.all(12.0),
-              child: Text(
-                'Nazmino v1.0.0',
-                style: TextStyle(color: Colors.grey),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildDrawerItem({
-    required IconData icon,
-    required String text,
-    required VoidCallback onTap,
-  }) {
-    return ListTile(
-      leading: Icon(icon),
-      title: Text(text),
-      onTap: onTap,
-      horizontalTitleGap: 8,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
     );
   }
 
