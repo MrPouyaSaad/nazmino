@@ -8,6 +8,7 @@ import 'package:nazmino/provider/category_provider.dart';
 import 'package:nazmino/provider/transaction_history_provider.dart';
 import 'package:nazmino/provider/transaction_provider.dart';
 import 'package:nazmino/service/lang_load_service.dart';
+import 'package:nazmino/view/auth_screen.dart';
 import 'package:nazmino/view/transactions_list_screen.dart';
 import 'package:provider/provider.dart';
 
@@ -49,7 +50,7 @@ class MyApp extends StatelessWidget {
         theme: AppThemes.lightTheme(localeService.currentLocale.value),
         darkTheme: AppThemes.darkTheme(localeService.currentLocale.value),
         themeMode: ThemeMode.system,
-        home: TransactionsListScreen(),
+        home: AuthScreen(),
       ),
     );
   }
