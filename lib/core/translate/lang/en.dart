@@ -57,7 +57,6 @@ class EnKeys extends AppTranslationKeys {
     AppMessages.categoryName: 'Category Name',
     AppMessages.add: 'Add',
     AppMessages.selectedCategory: 'Selected category',
-    AppMessages.all: 'All',
     AppMessages.restore: 'Restore',
     AppMessages.restoreTransaction: 'Restore Transaction',
     AppMessages.confirmRestore:
@@ -74,5 +73,23 @@ class EnKeys extends AppTranslationKeys {
     AppMessages.feature4: 'Completely offline with local database',
     AppMessages.developedBy: 'Developed by',
     AppMessages.pouyaDev: 'Pouya Dev',
+
+    AppMessages.login: 'Login',
+    AppMessages.signup: 'Sign Up',
+    AppMessages.username: 'Phone Number',
+    AppMessages.password: 'Password',
+    AppMessages.loginSuccess: 'Logged in successfully',
+    AppMessages.signupSuccess: 'Account created successfully',
+    AppMessages.passwordTooShort: 'Password must be at least 6 characters',
+    AppMessages.usernameRequired: 'Username is required',
+    AppMessages.dontHaveAccount: 'Don\'t have an account?',
+    AppMessages.alreadyHaveAccount: 'Already have an account?',
+    AppMessages.loginToYourAccount: 'Login to your account',
+    AppMessages.createAccount: 'Create Account',
+    AppMessages.code: 'Verification code',
+    AppMessages.verifyYourNumber: 'Verify your number',
+    AppMessages.resendCode: 'Resend Code',
+    AppMessages.resendIn: 'Resend In',
+    AppMessages.seconds: 'Sec',
   };
 }

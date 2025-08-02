@@ -1,61 +1,31 @@
 import 'package:flutter/material.dart';
+import 'package:dio/dio.dart';
+import 'package:get/get.dart';
+import 'package:nazmino/view/transactions_list_screen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthProvider with ChangeNotifier {
+  // final messages = AppMessages.of(Get.context!);
+
   final GlobalKey<FormState> formKey = GlobalKey();
-  final TextEditingController emailController = TextEditingController();
-  final TextEditingController usernameController = TextEditingController();
-  final TextEditingController passwordController = TextEditingController();
 
-  bool _isLogin = true;
-  bool _obscurePassword = true;
+  final TextEditingController phoneController = TextEditingController(text: '');
+  final TextEditingController codeController = TextEditingController(text: '');
+
   bool _isLoading = false;
+  bool _codeSent = true;
 
-  bool get isLogin => _isLogin;
-  bool get obscurePassword => _obscurePassword;
   bool get isLoading => _isLoading;
+  bool get codeSent => _codeSent;
 
-  void toggleAuthMode() {
-    _isLogin = !_isLogin;
-    notifyListeners();
-  }
-
-  void togglePasswordVisibility() {
-    _obscurePassword = !_obscurePassword;
-    notifyListeners();
-  }
-
-  String? validateEmail(String? value) {
-    if (!isLogin && (value == null || value.isEmpty)) {
-      return 'لطفا ایمیل را وارد کنید';
-    }
-    if (!isLogin && !value!.contains('@')) {
-      return 'ایمیل معتبر نیست';
-    }
-    return null;
-  }
-
-  String? validateUsername(String? value) {
-    if (value == null || value.isEmpty) {
-      return 'لطفا نام کاربری را وارد کنید';
-    }
-    if (value.length < 4) {
-      return 'نام کاربری باید حداقل ۴ کاراکتر باشد';
-    }
-    return null;
-  }
-
-  String? validatePassword(String? value) {
-    if (value == null || value.isEmpty) {
-      return 'لطفا رمز عبور را وارد کنید';
-    }
-    if (value.length < 6) {
-      return 'رمز عبور باید حداقل ۶ کاراکتر باشد';
-    }
-    return null;
-  }
-
-  Future<void> submitForm(BuildContext context) async {
-    if (!formKey.currentState!.validate()) {
+  Future<void> sendCode() async {
+    if (phoneController.text.trim().isEmpty) {
+      Get.snackbar(
+        'خطا',
+        'لطفا شماره موبایل را وارد کنید',
+        backgroundColor: Colors.red,
+        colorText: Colors.white,
+      );
       return;
     }
 
@@ -63,28 +33,34 @@ class AuthProvider with ChangeNotifier {
     notifyListeners();
 
     try {
-      if (isLogin) {
-        // Login logic
-        await Future.delayed(const Duration(seconds: 2)); // Simulate API call
-      } else {
-        // Register logic
-        await Future.delayed(const Duration(seconds: 2)); // Simulate API call
-      }
-
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(
-            isLogin ? 'ورود موفقیت‌آمیز بود' : 'ثبت نام موفقیت‌آمیز بود',
-          ),
-          backgroundColor: Colors.green,
-        ),
+      final dio = Dio();
+      final response = await dio.post(
+        'http://10.0.2.2:5000/api/auth/send-code',
+        data: {"phone": phoneController.text.trim()},
       );
-    } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('خطا: ${e.toString()}'),
+
+      if (response.statusCode == 200) {
+        _codeSent = true;
+        Get.snackbar(
+          'موفقیت',
+          'کد تایید ارسال شد',
+          backgroundColor: Colors.green,
+          colorText: Colors.white,
+        );
+      } else {
+        Get.snackbar(
+          'خطا',
+          'خطا در ارسال کد',
           backgroundColor: Colors.red,
-        ),
+          colorText: Colors.white,
+        );
+      }
+    } catch (e) {
+      Get.snackbar(
+        'خطا',
+        'خطا در ارسال درخواست: $e',
+        backgroundColor: Colors.red,
+        colorText: Colors.white,
       );
     } finally {
       _isLoading = false;
@@ -92,11 +68,108 @@ class AuthProvider with ChangeNotifier {
     }
   }
 
+  Future<void> verifyCode() async {
+    if (codeController.text.trim().length != 5) {
+      Get.snackbar(
+        'خطا',
+        'کد تایید باید ۵ رقمی باشد',
+        backgroundColor: Colors.red,
+        colorText: Colors.white,
+      );
+      return;
+    }
+
+    _isLoading = true;
+    notifyListeners();
+
+    try {
+      final dio = Dio();
+      final response = await dio.post(
+        'http://10.0.2.2:5000/api/auth/verify-code',
+        data: {
+          "phone": phoneController.text.trim(),
+          "code": codeController.text.trim(),
+        },
+      );
+
+      if (response.statusCode == 200) {
+        final token = response.data['token'];
+        if (token != null) {
+          final prefs = await SharedPreferences.getInstance();
+          await prefs.setString('token', token);
+
+          Get.offAll(TransactionsListScreen());
+          Get.snackbar(
+            'موفقیت',
+            'ورود موفقیت‌آمیز بود',
+            backgroundColor: Colors.green,
+            colorText: Colors.white,
+          );
+        } else {
+          Get.snackbar(
+            'خطا',
+            'توکن دریافت نشد',
+            backgroundColor: Colors.red,
+            colorText: Colors.white,
+          );
+        }
+      } else {
+        Get.snackbar(
+          'خطا',
+          'کد تایید اشتباه است',
+          backgroundColor: Colors.red,
+          colorText: Colors.white,
+        );
+      }
+    } catch (e) {
+      Get.snackbar(
+        'خطا',
+        'خطا در ارسال درخواست: $e',
+        backgroundColor: Colors.red,
+        colorText: Colors.white,
+      );
+    } finally {
+      _isLoading = false;
+      notifyListeners();
+    }
+  }
+
+  String? validatePhone(String? value) {
+    if (value == null || value.trim().isEmpty) {
+      return 'لطفا شماره موبایل را وارد کنید';
+    }
+    // بررسی ساختار شماره موبایل (ایرانی)
+    final phoneRegExp = RegExp(r'^(09|9)\d{9}$');
+    if (!phoneRegExp.hasMatch(value.trim())) {
+      return 'شماره موبایل معتبر نیست';
+    }
+    return null;
+  }
+
+  String? validateCode(String? value) {
+    if (value == null || value.trim().isEmpty) {
+      return 'کد تایید را وارد کنید';
+    }
+    if (value.trim().length != 5) {
+      return 'کد تایید باید ۵ رقمی باشد';
+    }
+    if (!RegExp(r'^\d{5}$').hasMatch(value.trim())) {
+      return 'کد تایید باید فقط شامل عدد باشد';
+    }
+    return null;
+  }
+
+  void reset() {
+    _codeSent = false;
+    phoneController.clear();
+    codeController.clear();
+    notifyListeners();
+  }
+
   @override
   void dispose() {
-    emailController.dispose();
-    usernameController.dispose();
-    passwordController.dispose();
+    phoneController.dispose();
+    codeController.dispose();
     super.dispose();
   }
 }

@@ -4,12 +4,12 @@ import 'package:nazmino/controller/theme_controller.dart';
 import 'package:nazmino/core/extensions/app_version.dart';
 import 'package:nazmino/core/theme/theme.dart';
 import 'package:nazmino/core/translate/translate.dart';
+import 'package:nazmino/provider/auth_provider.dart';
 import 'package:nazmino/provider/category_provider.dart';
 import 'package:nazmino/provider/transaction_history_provider.dart';
 import 'package:nazmino/provider/transaction_provider.dart';
 import 'package:nazmino/service/lang_load_service.dart';
 import 'package:nazmino/view/auth_screen.dart';
-import 'package:nazmino/view/transactions_list_screen.dart';
 import 'package:provider/provider.dart';
 
 void main() async {
@@ -22,6 +22,7 @@ void main() async {
     // This allows us to access the TransactionProvider in any widget below it
     MultiProvider(
       providers: [
+        ChangeNotifierProvider(create: (context) => AuthProvider()),
         ChangeNotifierProvider(create: (context) => TransactionProvider()),
         ChangeNotifierProvider(create: (context) => CategoryProvider()),
         ChangeNotifierProvider(
@@ -45,6 +46,8 @@ class MyApp extends StatelessWidget {
         title: 'Nazmino',
         translations: AppTranslate(),
         locale: localeService.currentLocale.value,
+
+        // supportedLocales: const [Locale('en'), Locale('fa')],
         debugShowCheckedModeBanner: false,
 
         theme: AppThemes.lightTheme(localeService.currentLocale.value),

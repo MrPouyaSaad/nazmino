@@ -12,7 +12,7 @@ class ThemeController extends GetxController {
   void changeLocale(Locale newLocale) {
     locale.value = newLocale;
     Get.updateLocale(newLocale);
-    update(); // برای GetBuilder
+    update(); //GetBuilder
   }
 
   var isDarkMode = false.obs;
@@ -25,8 +25,18 @@ class ThemeController extends GetxController {
 
   void _loadTheme() async {
     final prefs = await SharedPreferences.getInstance();
-    isDarkMode.value = prefs.getBool('isDarkMode') ?? false;
-    Get.changeThemeMode(isDarkMode.value ? ThemeMode.dark : ThemeMode.light);
+    final themePref = prefs.getString('themeMode') ?? 'system';
+    if (themePref == 'light') {
+      isDarkMode.value = false;
+      Get.changeThemeMode(ThemeMode.light);
+    } else if (themePref == 'dark') {
+      isDarkMode.value = true;
+      Get.changeThemeMode(ThemeMode.dark);
+    } else {
+      // حالت سیستم
+      isDarkMode.value = Get.isPlatformDarkMode;
+      Get.changeThemeMode(ThemeMode.system);
+    }
   }
 
   void toggleTheme() async {

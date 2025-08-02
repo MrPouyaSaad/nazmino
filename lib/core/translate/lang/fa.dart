@@ -59,7 +59,6 @@ class FaKeys extends AppTranslationKeys {
     AppMessages.categoryName: 'نام دسته‌بندی',
     AppMessages.add: 'افزودن',
     AppMessages.selectedCategory: 'دسته‌بندی انتخاب شده',
-    AppMessages.all: 'همه',
     AppMessages.restore: 'بازیابی',
     AppMessages.restoreTransaction: 'بازیابی تراکنش',
     AppMessages.confirmRestore:
@@ -77,5 +76,23 @@ class FaKeys extends AppTranslationKeys {
 
     AppMessages.developedBy: 'توسعه داده شده توسط',
     AppMessages.pouyaDev: 'پویا توسعه',
+
+    AppMessages.login: 'ورود',
+    AppMessages.signup: 'ثبت‌نام',
+    AppMessages.username: 'شماره موبایل',
+    AppMessages.password: 'رمز عبور',
+    AppMessages.loginSuccess: 'با موفقیت وارد شدید',
+    AppMessages.signupSuccess: 'حساب با موفقیت ایجاد شد',
+    AppMessages.passwordTooShort: 'رمز عبور باید حداقل ۶ کاراکتر باشد',
+    AppMessages.usernameRequired: 'نام کاربری الزامی است',
+    AppMessages.dontHaveAccount: 'حساب ندارید؟',
+    AppMessages.alreadyHaveAccount: 'حساب دارید؟',
+    AppMessages.loginToYourAccount: 'ورود به حساب کاربری',
+    AppMessages.createAccount: ' ایجاد حساب کاربری',
+    AppMessages.code: 'کد تایید',
+    AppMessages.verifyYourNumber: 'شماره موبایل خود را تایید کنید',
+    AppMessages.resendCode: 'ارسال مجدد',
+    AppMessages.resendIn: 'ارسال مجدد تا',
+    AppMessages.seconds: 'ثانیه',
   };
 }

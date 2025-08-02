@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LocaleService extends GetxService {
-  final Rx<Locale> currentLocale = const Locale('en', 'US').obs;
+  final Rx<Locale> currentLocale = const Locale('fa', 'IR').obs;
 
   Future<LocaleService> init() async {
     await loadLocale();
@@ -13,7 +13,7 @@ class LocaleService extends GetxService {
 
   Future<void> loadLocale() async {
     final shared = await SharedPreferences.getInstance();
-    final langCode = shared.getString('language') ?? 'en';
+    final langCode = shared.getString('language') ?? 'fa';
     currentLocale.value = localeFromCode(langCode);
   }
 

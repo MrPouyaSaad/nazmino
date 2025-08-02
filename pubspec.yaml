@@ -45,6 +45,7 @@ dependencies:
   shared_preferences: ^2.5.3
   rename: ^3.1.0
   package_info_plus: ^8.3.0
+  dio: ^5.8.0+1
  
 
 dev_dependencies:

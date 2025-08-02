@@ -1,20 +1,16 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:nazmino/controller/theme_controller.dart';
 import 'package:nazmino/core/translate/messages.dart';
 import 'package:nazmino/model/transaction.dart';
 import 'package:nazmino/provider/category_provider.dart';
 import 'package:nazmino/provider/transaction_history_provider.dart';
 import 'package:nazmino/provider/transaction_provider.dart';
-import 'package:nazmino/service/lang_load_service.dart';
-import 'package:nazmino/view/about_app_screen.dart';
 import 'package:nazmino/widgets/drawer.dart';
 import 'package:nazmino/widgets/transaction_tile.dart';
 import 'package:provider/provider.dart';
 import 'package:nazmino/widgets/total_report.dart';
 import 'package:nazmino/view/add_transaction_screen.dart';
-import 'package:nazmino/view/transaction_history_screen.dart';
 
 class TransactionsListScreen extends StatefulWidget {
   const TransactionsListScreen({super.key});

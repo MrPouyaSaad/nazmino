@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:nazmino/core/translate/messages.dart';
 import 'package:nazmino/provider/auth_provider.dart';
+import 'package:nazmino/widgets/auth/auth_toggle_button.dart';
 import 'package:nazmino/widgets/custom_text_field.dart';
 import 'package:provider/provider.dart';
 
@@ -9,42 +12,28 @@ class AuthForm extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final provider = context.watch<AuthProvider>();
-    final isLogin = provider.isLogin;
 
     return Form(
       key: provider.formKey,
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.end,
+
         children: [
-          if (!isLogin)
-            CustomTextField(
-              controller: provider.emailController,
-              labelText: 'ایمیل',
-              icon: Icons.email,
-              validator: (value) => provider.validateEmail(value),
-            ),
-          const SizedBox(height: 16),
           CustomTextField(
-            controller: provider.usernameController,
-            labelText: 'نام کاربری',
-            icon: Icons.person,
-            validator: (value) => provider.validateUsername(value),
+            keyboardType: TextInputType.numberWithOptions(),
+            controller: provider.codeSent
+                ? provider.codeController
+                : provider.phoneController,
+            labelText: provider.codeSent
+                ? AppMessages.code.tr
+                : AppMessages.username.tr,
+            icon: provider.codeSent ? Icons.password : Icons.phone_android,
+            validator: (value) => provider.codeSent
+                ? provider.validateCode(value)
+                : provider.validatePhone(value),
           ),
-          const SizedBox(height: 16),
-          CustomTextField(
-            controller: provider.passwordController,
-            labelText: 'رمز عبور',
-            icon: Icons.lock,
-            obscureText: provider.obscurePassword,
-            suffixIcon: IconButton(
-              icon: Icon(
-                provider.obscurePassword
-                    ? Icons.visibility
-                    : Icons.visibility_off,
-              ),
-              onPressed: provider.togglePasswordVisibility,
-            ),
-            validator: (value) => provider.validatePassword(value),
-          ),
+          SizedBox(height: 8),
+          if (provider.codeSent) AuthResendCodeButton(),
         ],
       ),
     );

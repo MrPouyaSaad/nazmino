@@ -1,4 +1,7 @@
 class AppMessages {
+  // static AppMessages of(BuildContext context) =>
+  //     Localizations.of<AppMessages>(context, AppMessages)!;
+
   static const String appName = 'Nazmino';
   static const String addTransaction = 'Add Transaction';
   static const String editTransaction = 'Edit Transaction';
@@ -71,4 +74,30 @@ class AppMessages {
 
   static const String developedBy = 'Developed by';
   static const String pouyaDev = 'Pouya Dev';
+  static const login = 'login';
+  static const signup = 'signup';
+  static const username = 'username';
+  static const password = 'password';
+
+  static const loginSuccess = 'loginSuccess';
+  static const signupSuccess = 'signupSuccess';
+  static const passwordTooShort = 'passwordTooShort';
+  static const usernameRequired = 'usernameRequired';
+  static const dontHaveAccount = 'dontHaveAccount';
+  static const alreadyHaveAccount = 'alreadyHaveAccount';
+  static const loginToYourAccount = 'Login to your account';
+  static const createAccount = 'Create Account';
+  static const String emailRequired = 'emailRequired';
+  static const String emailInvalid = 'emailInvalid';
+  static const String usernameTooShort = 'usernameTooShort';
+  static const String passwordRequired = 'passwordRequired';
+  static const String passwordTooShortMsg = 'passwordTooShortMsg';
+  static const String tokenNotReceived = 'tokenNotReceived';
+  static const String registerError = 'registerError';
+  static const String requestError = 'requestError';
+  static const String code = 'Verification code';
+  static const String verifyYourNumber = 'verifyYourNumber';
+  static const resendCode = 'resendCode';
+  static const resendIn = 'resendIn';
+  static const seconds = 'seconds';
 }
