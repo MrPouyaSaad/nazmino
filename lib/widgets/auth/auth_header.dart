@@ -14,89 +14,94 @@ class AuthHeader extends StatelessWidget {
 
     return Column(
       children: [
-        // Animated switching between phone and verification icons
+        // Animated icon with smooth transition
+        AnimatedSwitcher(
+          duration: const Duration(milliseconds: 500),
+          transitionBuilder: (child, animation) {
+            return ScaleTransition(
+              scale: animation,
+              child: FadeTransition(opacity: animation, child: child),
+            );
+          },
+          child: authProvider.codeSent
+              ? _buildVerificationBadge(theme)
+              : _buildPhoneBadge(theme),
+        ),
+
+        const SizedBox(height: 32),
+
+        // Title with smooth fade transition
         AnimatedSwitcher(
           duration: const Duration(milliseconds: 300),
-          child: authProvider.codeSent
-              ? _buildVerificationIcon(theme)
-              : _buildPhoneIcon(theme),
+          child: Text(
+            key: ValueKey(authProvider.codeSent ? 'verify' : 'login'),
+            authProvider.codeSent
+                ? AppMessages.verifyYourNumber.tr
+                : AppMessages.loginToYourAccount.tr,
+            style: theme.textTheme.headlineSmall?.copyWith(
+              fontWeight: FontWeight.bold,
+              color: theme.colorScheme.onSurface,
+            ),
+            textAlign: TextAlign.center,
+          ),
         ),
 
-        const SizedBox(height: 24),
+        const SizedBox(height: 12),
 
-        // Dynamic title based on auth state
-        Text(
-          authProvider.codeSent
-              ? AppMessages.verifyYourNumber.tr
-              : AppMessages.loginToYourAccount.tr,
-
-          style: theme.textTheme.headlineSmall?.copyWith(
-            fontWeight: FontWeight.bold,
-            color: theme.colorScheme.onSurface,
+        // Subtitle with smooth fade transition
+        AnimatedSwitcher(
+          duration: const Duration(milliseconds: 300),
+          child: Text(
+            key: ValueKey(
+              authProvider.codeSent
+                  ? 'code-sent-${authProvider.phoneController.text}'
+                  : 'enter-number',
+            ),
+            authProvider.codeSent
+                ? 'کد تأیید به ${authProvider.phoneController.text} ارسال شد'
+                : 'شماره موبایل خود را وارد کنید',
+            style: theme.textTheme.bodyMedium?.copyWith(
+              color: theme.colorScheme.onSurface.withOpacity(0.7),
+            ),
+            textAlign: TextAlign.center,
           ),
-          textAlign: TextAlign.center,
-        ),
-
-        const SizedBox(height: 8),
-
-        // Dynamic subtitle based on auth state
-        Text(
-          authProvider.codeSent
-              ? 'We sent a code to ${authProvider.phoneController.text}'.tr
-              : 'Enter your mobile number to sign in'.tr,
-          style: theme.textTheme.bodyMedium?.copyWith(
-            color: theme.colorScheme.onSurface.withOpacity(0.7),
-          ),
-          textAlign: TextAlign.center,
         ),
       ],
     );
   }
 
-  Widget _buildPhoneIcon(ThemeData theme) {
+  Widget _buildPhoneBadge(ThemeData theme) {
     return Container(
-      key: const ValueKey('phone-icon'),
-      width: 100,
-      height: 100,
+      key: const ValueKey('phone-badge'),
+      width: 120,
+      height: 120,
       decoration: BoxDecoration(
-        gradient: LinearGradient(
-          colors: [
-            theme.colorScheme.primary,
-            theme.colorScheme.primaryContainer,
-          ],
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-        ),
+        color: theme.colorScheme.onPrimary.withOpacity(0.2),
         shape: BoxShape.circle,
+        border: Border.all(color: theme.colorScheme.onPrimary, width: 2),
       ),
       child: Icon(
         Icons.phone_iphone_rounded,
-        size: 50,
+        size: 60,
         color: theme.colorScheme.onPrimary,
       ),
     );
   }
 
-  Widget _buildVerificationIcon(ThemeData theme) {
+  Widget _buildVerificationBadge(ThemeData theme) {
     return Container(
-      key: const ValueKey('otp-icon'),
-      width: 100,
-      height: 100,
+      key: const ValueKey('otp-badge'),
+      width: 120,
+      height: 120,
       decoration: BoxDecoration(
-        gradient: LinearGradient(
-          colors: [
-            theme.colorScheme.secondary,
-            theme.colorScheme.secondaryContainer,
-          ],
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-        ),
+        color: theme.colorScheme.secondaryContainer.withOpacity(0.2),
         shape: BoxShape.circle,
+        border: Border.all(color: theme.colorScheme.secondary, width: 2),
       ),
       child: Icon(
         Icons.verified_rounded,
-        size: 50,
-        color: theme.colorScheme.onSecondary,
+        size: 60,
+        color: theme.colorScheme.secondary,
       ),
     );
   }
