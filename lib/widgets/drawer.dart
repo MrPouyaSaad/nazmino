@@ -5,7 +5,7 @@ import 'package:nazmino/core/extensions/app_version.dart';
 import 'package:nazmino/core/translate/messages.dart';
 import 'package:nazmino/service/lang_load_service.dart';
 import 'package:nazmino/view/about_app_screen.dart';
-import 'package:nazmino/view/transaction_history_screen.dart';
+import 'package:nazmino/view/history/transaction_history_screen.dart';
 
 class AppDrawer extends StatelessWidget {
   const AppDrawer({super.key});

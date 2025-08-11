@@ -1,4 +1,4 @@
-import 'package:nazmino/model/transaction.dart';
+import 'package:nazmino/bloc/model/transaction.dart';
 
 extension TransactionListExtensions on List<Transaction> {
   double get totalAmount => fold(0.0, (sum, t) {

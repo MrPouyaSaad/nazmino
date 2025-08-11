@@ -2,14 +2,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:nazmino/core/translate/messages.dart' show AppMessages;
-import 'package:nazmino/model/transaction.dart';
+import 'package:nazmino/bloc/model/transaction.dart';
 import 'package:nazmino/core/extensions/price_extensions.dart';
+import 'package:nazmino/widgets/loading_widget.dart';
 
 class TransactionTile extends StatelessWidget {
   final Transaction transaction;
   final VoidCallback onTap;
   final VoidCallback onDelete;
-
   final bool isFromHistory;
 
   const TransactionTile({
@@ -51,8 +51,10 @@ class TransactionTile extends StatelessWidget {
     final theme = Theme.of(context);
 
     return GestureDetector(
-      onTap: onTap,
-      onLongPress: () => _confirmDelete(context),
+      onTap: transaction.isDeleting ? null : onTap,
+      onLongPress: transaction.isDeleting
+          ? null
+          : () => _confirmDelete(context),
       child: Card(
         margin: EdgeInsets.zero,
         shape: RoundedRectangleBorder(
@@ -64,64 +66,87 @@ class TransactionTile extends StatelessWidget {
         ),
         color: theme.cardColor,
         elevation: 0,
-        child: ListTile(
-          dense: true,
-          contentPadding: const EdgeInsets.symmetric(
-            horizontal: 16,
-            vertical: 0,
-          ),
-          title: Text(
-            transaction.title,
-            style: theme.textTheme.bodyMedium?.copyWith(
-              color: theme.colorScheme.onSurface,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          subtitle: Text(
-            transaction.isInCome
-                ? AppMessages.income.tr
-                : AppMessages.expense.tr,
-            style: theme.textTheme.bodySmall?.copyWith(
-              color: theme.colorScheme.onSurface.withOpacity(0.6),
-            ),
-          ),
-          trailing: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.end,
+        child: Stack(
+          children: [
+            ListTile(
+              dense: true,
+              contentPadding: const EdgeInsets.symmetric(
+                horizontal: 16,
+                vertical: 0,
+              ),
+              title: Text(
+                transaction.title,
+                style: theme.textTheme.bodyMedium?.copyWith(
+                  color: transaction.isDeleting
+                      ? theme.colorScheme.onSurface.withOpacity(0.5)
+                      : theme.colorScheme.onSurface,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              subtitle: Text(
+                transaction.isInCome
+                    ? AppMessages.income.tr
+                    : AppMessages.expense.tr,
+                style: theme.textTheme.bodySmall?.copyWith(
+                  color: transaction.isDeleting
+                      ? theme.colorScheme.onSurface.withOpacity(0.3)
+                      : theme.colorScheme.onSurface.withOpacity(0.6),
+                ),
+              ),
+              trailing: Row(
+                mainAxisSize: MainAxisSize.min,
                 children: [
-                  Text(
-                    transaction.amount.toPriceStringWithCurrency(),
-                    style: theme.textTheme.bodyMedium?.copyWith(
-                      fontWeight: FontWeight.bold,
-                      color: transaction.isInCome
-                          ? theme.colorScheme.tertiary
-                          : theme.colorScheme.error,
-                    ),
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      Text(
+                        transaction.amount.toPriceStringWithCurrency(),
+                        style: theme.textTheme.bodyMedium?.copyWith(
+                          fontWeight: FontWeight.bold,
+                          color: transaction.isDeleting
+                              ? theme.colorScheme.onSurface.withOpacity(0.5)
+                              : transaction.isInCome
+                              ? theme.colorScheme.tertiary
+                              : theme.colorScheme.error,
+                        ),
+                      ),
+                      const SizedBox(height: 4),
+                      Text(
+                        transaction.id?.substring(0, 10) ?? '',
+                        style: theme.textTheme.bodySmall?.copyWith(
+                          color: transaction.isDeleting
+                              ? theme.colorScheme.onSurface.withOpacity(0.2)
+                              : theme.colorScheme.onSurface.withOpacity(0.4),
+                        ),
+                      ),
+                    ],
                   ),
-                  const SizedBox(height: 4),
-                  Text(
-                    transaction.id.substring(0, 10),
-                    style: theme.textTheme.bodySmall?.copyWith(
-                      color: theme.colorScheme.onSurface.withOpacity(0.4),
+                  if (isFromHistory) ...[
+                    const SizedBox(width: 8),
+                    IconButton(
+                      onPressed: transaction.isDeleting
+                          ? null
+                          : () => _restoreFromHistory(context),
+                      icon: Icon(
+                        CupertinoIcons.arrow_counterclockwise,
+                        color: transaction.isDeleting
+                            ? theme.colorScheme.onSurface.withOpacity(0.3)
+                            : theme.colorScheme.onSurface,
+                      ),
                     ),
-                  ),
+                  ],
                 ],
               ),
-              if (isFromHistory) ...[
-                const SizedBox(width: 8),
-                IconButton(
-                  onPressed: () => _restoreFromHistory(context),
-                  icon: Icon(
-                    CupertinoIcons.arrow_counterclockwise,
-                    color: theme.colorScheme.onSurface,
-                  ),
+            ),
+            if (transaction.isDeleting)
+              Positioned.fill(
+                child: Container(
+                  color: theme.cardColor.withOpacity(0.7),
+                  child: AppLoading(),
                 ),
-              ],
-            ],
-          ),
+              ),
+          ],
         ),
       ),
     );

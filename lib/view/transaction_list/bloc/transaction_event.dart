@@ -28,10 +28,10 @@ class DeleteTransaction extends TransactionEvent {
 class DeleteAllTransactions extends TransactionEvent {}
 
 class FilterByCategory extends TransactionEvent {
-  final String? categoryId;
+  final TransactionCategory category;
 
-  FilterByCategory(this.categoryId);
+  FilterByCategory(this.category);
 
   @override
-  List<Object?> get props => [categoryId];
+  List<Object?> get props => [category];
 }

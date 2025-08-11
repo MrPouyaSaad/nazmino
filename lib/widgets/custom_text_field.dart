@@ -23,7 +23,7 @@ class CustomTextField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-
+    final themeMode = theme.brightness == Brightness.dark ? false : true;
     return TextFormField(
       controller: controller,
       obscureText: obscureText,
@@ -32,7 +32,12 @@ class CustomTextField extends StatelessWidget {
       style: theme.textTheme.bodyMedium,
       decoration: InputDecoration(
         labelText: labelText,
-        prefixIcon: Icon(icon, color: theme.colorScheme.primary),
+        prefixIcon: Icon(
+          icon,
+          color: themeMode
+              ? theme.colorScheme.primary
+              : theme.colorScheme.onPrimary,
+        ),
         suffixIcon: suffixIcon,
         border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
         focusedBorder: OutlineInputBorder(

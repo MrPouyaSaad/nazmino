@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:nazmino/core/extensions/price_extensions.dart';
 import 'package:nazmino/core/extensions/transaction_extensions.dart';
-import 'package:nazmino/model/transaction.dart';
+import 'package:nazmino/bloc/model/transaction.dart';
 import '../core/translate/messages.dart' show AppMessages;
 
 class TotalReport extends StatelessWidget {

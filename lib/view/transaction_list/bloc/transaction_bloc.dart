@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:nazmino/bloc/model/category.dart';
 import 'package:nazmino/bloc/model/transaction.dart';
 import 'package:nazmino/bloc/repository/transaction_repo.dart';
 
@@ -8,6 +9,10 @@ part 'transaction_state.dart';
 
 class TransactionBloc extends Bloc<TransactionEvent, TransactionState> {
   final ITransactionRepository _transactionRepository;
+  String? selectedCategory;
+
+  // لیست اصلی تراکنش‌ها که همیشه کامل باقی می‌مونه
+  List<Transaction> _allTransactions = [];
 
   TransactionBloc(this._transactionRepository) : super(TransactionLoading()) {
     on<TransactionsListScreenStarted>(_onLoadTransactions);
@@ -24,6 +29,7 @@ class TransactionBloc extends Bloc<TransactionEvent, TransactionState> {
     emit(TransactionLoading());
     try {
       final transactions = await _transactionRepository.getTransactions();
+      _allTransactions = transactions; // ذخیره لیست اصلی
       emit(TransactionLoaded(transactions: transactions));
     } catch (_) {
       emit(TransactionError());
@@ -34,13 +40,18 @@ class TransactionBloc extends Bloc<TransactionEvent, TransactionState> {
     AddTransaction event,
     Emitter<TransactionState> emit,
   ) async {
-    try {
-      emit(AddTransactionLoading());
-      await _transactionRepository.addTransactions(event.transaction);
-      emit(AddTransactionSuccess());
-      add(TransactionsListScreenStarted()); // refresh after adding
-    } catch (_) {
-      emit(TransactionError());
+    if (state is TransactionLoaded) {
+      try {
+        emit(AddTransactionLoading());
+        final newTransactions = await _transactionRepository.addTransactions(
+          event.transaction,
+        );
+        _allTransactions = newTransactions; // آپدیت لیست اصلی
+        emit(AddTransactionSuccess());
+        emit(TransactionLoaded(transactions: newTransactions));
+      } catch (_) {
+        emit(TransactionError());
+      }
     }
   }
 
@@ -50,10 +61,36 @@ class TransactionBloc extends Bloc<TransactionEvent, TransactionState> {
   ) async {
     if (state is TransactionLoaded) {
       try {
+        final currentState = state as TransactionLoaded;
+        final List<Transaction> transactions = List.from(
+          currentState.transactions,
+        );
+
+        final tIndex = transactions.indexWhere(
+          (t) => t.id == event.transactionId,
+        );
+        if (tIndex == -1) return;
+
+        final updatedTransaction = transactions[tIndex].copyWith(
+          isLoading: true,
+        );
+        transactions[tIndex] = updatedTransaction;
+
+        emit(TransactionLoaded(transactions: transactions));
+
         await _transactionRepository.remove(event.transactionId);
-        add(TransactionsListScreenStarted());
+
+        final updatedList = transactions
+            .where((t) => t.id != event.transactionId)
+            .toList();
+
+        _allTransactions = _allTransactions
+            .where((t) => t.id != event.transactionId)
+            .toList(); // آپدیت لیست اصلی
+
+        emit(TransactionLoaded(transactions: updatedList));
       } catch (_) {
-        emit(TransactionError());
+        emit(TransactionDeleteError());
       }
     }
   }
@@ -65,6 +102,7 @@ class TransactionBloc extends Bloc<TransactionEvent, TransactionState> {
     if (state is TransactionLoaded) {
       try {
         await _transactionRepository.removeAll();
+        _allTransactions = []; // خالی کردن لیست اصلی
         add(TransactionsListScreenStarted());
       } catch (_) {
         emit(TransactionError());
@@ -77,13 +115,15 @@ class TransactionBloc extends Bloc<TransactionEvent, TransactionState> {
     Emitter<TransactionState> emit,
   ) async {
     if (state is TransactionLoaded) {
-      final current = (state as TransactionLoaded).transactions;
-      if (event.categoryId == null) {
-        emit(TransactionLoaded(transactions: current)); // all
+      final isAll = event.category.name == 'All';
+
+      if (isAll) {
+        emit(TransactionLoaded(transactions: _allTransactions));
       } else {
-        final filtered = current
-            .where((t) => t.categoryId == event.categoryId)
+        final filtered = _allTransactions
+            .where((t) => t.categoryId == event.category.id)
             .toList();
+        selectedCategory = event.category.id;
         emit(TransactionLoaded(transactions: filtered));
       }
     }

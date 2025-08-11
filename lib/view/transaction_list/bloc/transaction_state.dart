@@ -7,6 +7,12 @@ abstract class TransactionState extends Equatable {
 
 class TransactionLoading extends TransactionState {}
 
+class TransactionDeleteLoading extends TransactionState {}
+
+class TransactionDeleteSuccess extends TransactionState {}
+
+class TransactionDeleteError extends TransactionState {}
+
 class AddTransactionLoading extends TransactionState {}
 
 class AddTransactionSuccess extends TransactionState {}

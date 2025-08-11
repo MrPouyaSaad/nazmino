@@ -64,7 +64,9 @@ class _AuthResendCodeButtonState extends State<AuthResendCodeButton> {
           onPressed: _secondsLeft == 0 ? () => _resendCode(provider) : null,
           style: TextButton.styleFrom(
             padding: const EdgeInsets.symmetric(horizontal: 8),
-            backgroundColor: theme.colorScheme.primary,
+            backgroundColor: _secondsLeft != 0
+                ? Colors.transparent
+                : theme.colorScheme.primary,
             foregroundColor: theme.colorScheme.onPrimary,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(22),

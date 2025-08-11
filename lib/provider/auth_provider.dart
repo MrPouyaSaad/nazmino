@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
 import 'package:get/get.dart';
-import 'package:nazmino/view/transactions_list_screen.dart';
+import 'package:nazmino/bloc/source/token_datasource.dart';
+import 'package:nazmino/core/api/options.dart';
+import 'package:nazmino/view/transaction_list/transactions_list_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthProvider with ChangeNotifier {
@@ -13,7 +15,7 @@ class AuthProvider with ChangeNotifier {
   final TextEditingController codeController = TextEditingController(text: '');
 
   bool _isLoading = false;
-  bool _codeSent = true;
+  bool _codeSent = false;
 
   bool get isLoading => _isLoading;
   bool get codeSent => _codeSent;
@@ -35,7 +37,7 @@ class AuthProvider with ChangeNotifier {
     try {
       final dio = Dio();
       final response = await dio.post(
-        'http://10.0.2.2:5000/api/auth/send-code',
+        '${ApiBaseData.baseUrl}/auth/send-code',
         data: {"phone": phoneController.text.trim()},
       );
 
@@ -85,7 +87,7 @@ class AuthProvider with ChangeNotifier {
     try {
       final dio = Dio();
       final response = await dio.post(
-        'http://10.0.2.2:5000/api/auth/verify-code',
+        '${ApiBaseData.baseUrl}/auth/verify-code',
         data: {
           "phone": phoneController.text.trim(),
           "code": codeController.text.trim(),
@@ -96,7 +98,7 @@ class AuthProvider with ChangeNotifier {
         final token = response.data['token'];
         if (token != null) {
           final prefs = await SharedPreferences.getInstance();
-          await prefs.setString('token', token);
+          await prefs.setString(TokenDataSource.tokenKey, token);
 
           Get.offAll(TransactionsListScreen());
           Get.snackbar(

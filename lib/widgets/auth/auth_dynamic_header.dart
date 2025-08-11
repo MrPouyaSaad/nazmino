@@ -44,9 +44,9 @@ class _AuthDynamicHeaderState extends State<AuthDynamicHeader>
         onLoaded: (composition) {
           _animationController
             ..duration = composition.duration
-            ..forward();
+            ..repeat();
         },
-        frameRate: FrameRate.max, // برای نرم‌ترین انیمیشن
+        frameRate: FrameRate.max,
         options: LottieOptions(enableApplyingOpacityToLayers: true),
       ),
     );
