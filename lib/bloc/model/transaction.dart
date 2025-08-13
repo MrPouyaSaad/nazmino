@@ -5,7 +5,7 @@ class Transaction extends Equatable {
   final String title;
   final double amount;
   final bool isInCome;
-  final String categoryId;
+  final int categoryId;
   final DateTime date;
   final bool isDeleting;
 
@@ -24,7 +24,7 @@ class Transaction extends Equatable {
     String? title,
     double? amount,
     bool? isInCome,
-    String? categoryId,
+    int? categoryId,
     DateTime? date,
     bool? isLoading,
   }) {
@@ -41,7 +41,7 @@ class Transaction extends Equatable {
 
   factory Transaction.fromJson(Map<String, dynamic> json) {
     return Transaction(
-      json['_id'].toString(),
+      json['id'].toString(),
       json['title'],
       _toDouble(json['amount']),
       _toBool(json['type']),

@@ -76,10 +76,7 @@ class _TransactionsListScreenState
   }
 
   void _showLoadingDialog() {
-    Get.dialog(
-      const Center(child: CircularProgressIndicator()),
-      barrierDismissible: false,
-    );
+    Get.dialog(const AppLoading(), barrierDismissible: false);
   }
 
   void _hideLoadingDialog() {
@@ -132,7 +129,19 @@ class _TransactionsListScreenState
                 return const AppLoading();
               } else if (state is HistoryLoaded) {
                 final transactions = state.transactions;
-
+                if (transactions.isEmpty) {
+                  return Center(
+                    child: Text(
+                      AppMessages.emptyHistoryList.tr,
+                      style: TextStyle(
+                        color: Theme.of(
+                          context,
+                        ).colorScheme.onSurface.withOpacity(0.6),
+                        fontSize: 16,
+                      ),
+                    ),
+                  );
+                }
                 return ListView(
                   children: [
                     _buildHeader(context),

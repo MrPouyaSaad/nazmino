@@ -115,13 +115,14 @@ class TransactionBloc extends Bloc<TransactionEvent, TransactionState> {
     Emitter<TransactionState> emit,
   ) async {
     if (state is TransactionLoaded) {
-      final isAll = event.category.name == 'All';
+      final isAll =
+          event.category.name == 'All' || event.category.name == 'همه';
 
       if (isAll) {
         emit(TransactionLoaded(transactions: _allTransactions));
       } else {
         final filtered = _allTransactions
-            .where((t) => t.categoryId == event.category.id)
+            .where((t) => t.categoryId == int.parse(event.category.id))
             .toList();
         selectedCategory = event.category.id;
         emit(TransactionLoaded(transactions: filtered));

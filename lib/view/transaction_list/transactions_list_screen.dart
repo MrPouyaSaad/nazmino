@@ -13,7 +13,7 @@ import 'package:nazmino/widgets/loading_widget.dart';
 import 'package:nazmino/widgets/transaction_tile.dart';
 import 'package:nazmino/widgets/total_report.dart';
 import 'package:nazmino/view/add_transaction_screen.dart';
-import '../category/add_category.dart';
+import '../category/category_list.dart';
 import '../category/bloc/category_bloc.dart';
 
 class TransactionsListScreen extends StatelessWidget {
@@ -71,7 +71,7 @@ class _TransactionsListViewState extends State<_TransactionsListView> {
                 child: const Icon(Icons.add),
               );
             } else if (state is TransactionError) {
-              body = AppErrorWidget(
+              body = AppErrorScreen(
                 onRetry: () => BlocProvider.of<TransactionBloc>(
                   context,
                 ).add(TransactionsListScreenStarted()),
@@ -107,7 +107,7 @@ class _TransactionsListViewState extends State<_TransactionsListView> {
           ),
           flexibleSpace: FlexibleSpaceBar(
             background: Container(
-              padding: const EdgeInsets.only(top: kToolbarHeight + 32),
+              padding: const EdgeInsets.only(top: kToolbarHeight),
               width: double.infinity,
               alignment: Alignment.topCenter,
               child: Column(

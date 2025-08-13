@@ -1,6 +1,6 @@
+import 'dart:developer';
 import 'package:dio/dio.dart';
 import 'package:nazmino/core/api/validator.dart';
-
 import '../model/transaction.dart';
 
 abstract class ITransactionDataSource {
@@ -13,33 +13,51 @@ abstract class ITransactionDataSource {
 class TransactionDatasource implements ITransactionDataSource {
   final Dio httpClient;
   TransactionDatasource(this.httpClient);
+
   @override
   Future<List<Transaction>> getTransactions() async {
+    log('[TransactionDatasource] getTransactions() called');
     final response = await httpClient.get('/transactions');
+    log('[TransactionDatasource] GET /transactions => ${response.statusCode}');
     validateResponse(response);
-    final List<Transaction> transactions = [];
 
+    final List<Transaction> transactions = [];
     for (var transaction in response.data) {
       transactions.add(Transaction.fromJson(transaction));
     }
-
+    log(
+      '[TransactionDatasource] Retrieved ${transactions.length} transactions',
+    );
     return transactions;
   }
 
   @override
   Future<void> remove(String id) async {
+    log('[TransactionDatasource] remove() called with id: $id');
     final response = await httpClient.delete('/transactions/$id');
+    log(
+      '[TransactionDatasource] DELETE /transactions/$id => ${response.statusCode}',
+    );
     validateResponse(response);
+    log('[TransactionDatasource] Transaction $id removed');
   }
 
   @override
   Future<void> removeAll() async {
+    log('[TransactionDatasource] removeAll() called');
     final response = await httpClient.delete('/transactions');
+    log(
+      '[TransactionDatasource] DELETE /transactions => ${response.statusCode}',
+    );
     validateResponse(response);
+    log('[TransactionDatasource] All transactions removed');
   }
 
   @override
   Future<Transaction> addTransactions(Transaction transaction) async {
+    log(
+      '[TransactionDatasource] addTransactions() called with title: ${transaction.title}, amount: ${transaction.amount}',
+    );
     final type = transaction.isInCome ? 'income' : 'expense';
     final response = await httpClient.post(
       '/transactions',
@@ -51,7 +69,15 @@ class TransactionDatasource implements ITransactionDataSource {
         "date": transaction.date.toString(),
       },
     );
+    log(
+      '[TransactionDatasource] POST /transactions => ${response.statusCode}, data: ${response.data}',
+    );
     validateResponse(response);
-    return Transaction.fromJson(response.data);
+
+    final newTransaction = Transaction.fromJson(response.data);
+    log(
+      '[TransactionDatasource] Transaction added with id: ${newTransaction.id}',
+    );
+    return newTransaction;
   }
 }

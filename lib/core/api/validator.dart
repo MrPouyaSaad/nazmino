@@ -10,4 +10,5 @@ validateResponse(Response response) {
   }
 }
 
-String errorMessage = 'لطفا دستررسی به اینترنت خود را بررسی کنید!';
+String errorMessage =
+    'خطایی در برقراری ارتباط رخ داده است. لطفاً مجدداً تلاش فرمایید.';

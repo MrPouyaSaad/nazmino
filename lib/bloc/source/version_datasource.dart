@@ -3,6 +3,8 @@ import 'package:nazmino/bloc/repository/version_repo.dart';
 import 'package:nazmino/core/api/validator.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
+import '../model/version.dart';
+
 abstract class IVersionDataSource extends IVersionRepository {}
 
 class VersionDataSource implements IVersionDataSource {
@@ -10,29 +12,23 @@ class VersionDataSource implements IVersionDataSource {
 
   VersionDataSource(this.httpClient);
 
-  /// get local app version
   @override
   Future<String> getLocalVersion() async {
     final info = await PackageInfo.fromPlatform();
-    // use version + buildNumber if you want more precision
     return info.version;
   }
 
-  /// fetch latest version info from server
   @override
-  Future<String?> getServerVersion() async {
+  Future<VersionInfo?> getServerVersionInfo() async {
     final res = await httpClient.get('/version');
     validateResponse(res);
     try {
-      final data = res.data;
-
-      return data['latest'] as String?;
+      return VersionInfo.fromJson(res.data);
     } catch (e) {
       return null;
     }
   }
 
-  /// simple semver compare function (major.minor.patch)
   @override
   bool isServerVersionGreater(String local, String server) {
     List<int> parse(String v) =>

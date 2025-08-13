@@ -66,13 +66,15 @@ class EnKeys extends AppTranslationKeys {
         'Are you sure you want to delete this category? All transactions in this category will be deleted as well.',
 
     AppMessages.aboutDescription:
-        'Nazmino is a simple and user-friendly financial management application that helps you easily manage your income and expenses. With Nazmino, you can record financial transactions, create various categories, and get detailed financial reports. The app provides a pleasant financial management experience with its beautiful and intuitive design.',
+        'Nazmino is a simple and user-friendly financial management application that helps you easily manage your income and expenses. With Nazmino, you can record financial transactions, create various categories, and get detailed financial reports. The app is now online, and all your data is securely stored.',
+
     AppMessages.feature1: 'Track all your transactions',
     AppMessages.feature2: 'Add categories for better organization',
     AppMessages.feature3: 'Full transaction history',
-    AppMessages.feature4: 'Completely offline with local database',
+    AppMessages.feature4: 'Data is stored online securely',
+
     AppMessages.developedBy: 'Developed by',
-    AppMessages.pouyaDev: 'Pouya Dev',
+    AppMessages.pouyaDev: 'Pouya Sadeghzadeh',
 
     AppMessages.login: 'Login',
     AppMessages.signup: 'Sign Up',
@@ -91,5 +93,7 @@ class EnKeys extends AppTranslationKeys {
     AppMessages.resendCode: 'Resend Code',
     AppMessages.resendIn: 'Resend In',
     AppMessages.seconds: 'Sec',
+    AppMessages.emptyHistoryList: 'History Is Empty!',
+    AppMessages.logOut: 'Logout',
   };
 }

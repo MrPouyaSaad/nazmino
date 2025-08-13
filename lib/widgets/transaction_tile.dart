@@ -113,7 +113,7 @@ class TransactionTile extends StatelessWidget {
                       ),
                       const SizedBox(height: 4),
                       Text(
-                        transaction.id?.substring(0, 10) ?? '',
+                        transaction.date.toString().substring(0, 10),
                         style: theme.textTheme.bodySmall?.copyWith(
                           color: transaction.isDeleting
                               ? theme.colorScheme.onSurface.withOpacity(0.2)

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:dio/dio.dart';
 import 'package:nazmino/core/api/validator.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -29,14 +31,22 @@ class TokenDataSource implements ITokenDataSource {
   Future<bool> isTokenValid() async {
     final token = await getToken();
     if (token == null) return false;
-
-    final res = await httpClient.get('token-check');
+    log('Token :$token');
+    final res = await httpClient.get('/token-check');
 
     if (res.statusCode == 200) {
-      // server says OK
+      log('Token is valid ...');
+
       return true;
+    } else if (res.statusCode == 401) {
+      clearToken();
+      log('Token invalid ...');
+      log('Token clear ...');
+
+      return false;
     } else {
-      validateResponse(res);
+      log('Token req error ... ${res.statusMessage}');
+
       return false;
     }
   }

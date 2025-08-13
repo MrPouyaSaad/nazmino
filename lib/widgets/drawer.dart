@@ -5,7 +5,10 @@ import 'package:nazmino/core/extensions/app_version.dart';
 import 'package:nazmino/core/translate/messages.dart';
 import 'package:nazmino/service/lang_load_service.dart';
 import 'package:nazmino/view/about_app_screen.dart';
+import 'package:nazmino/view/auth_screen.dart';
 import 'package:nazmino/view/history/transaction_history_screen.dart';
+
+import '../provider/auth_provider.dart';
 
 class AppDrawer extends StatelessWidget {
   const AppDrawer({super.key});
@@ -117,6 +120,26 @@ class AppDrawer extends StatelessWidget {
                     text: AppMessages.aboutApp.tr,
                     onTap: () {
                       Get.to(() => const AboutAppScreen());
+                    },
+                  ),
+
+                  _buildDrawerItem(
+                    icon: Icons.logout,
+                    text: AppMessages.logOut.tr,
+                    onTap: () async {
+                      final authProvider = Get.find<AuthProvider>();
+
+                      final success = await authProvider.logout();
+                      if (success) {
+                        Get.offAll(() => const AuthScreen());
+                      } else {
+                        Get.snackbar(
+                          'خطا',
+                          'خروج از حساب انجام نشد',
+                          backgroundColor: errorColor,
+                          colorText: Colors.white,
+                        );
+                      }
                     },
                   ),
                 ],

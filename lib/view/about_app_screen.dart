@@ -1,8 +1,11 @@
+import 'dart:developer';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:nazmino/core/extensions/app_version.dart';
 import 'package:nazmino/core/translate/messages.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class AboutAppScreen extends StatelessWidget {
   const AboutAppScreen({super.key});
@@ -117,22 +120,28 @@ class AboutAppScreen extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 _buildIconButton(
-                  context,
+                  context: context,
                   icon: Icons.email,
-                  onPressed: () => _launchUrl('mailto:contact@example.com'),
+                  tooltip: 'ارسال ایمیل',
+                  onPressed: () =>
+                      _launchUrl('mailto:Mr.PouyaSadeghzadeh@gmail.com'),
                 ),
+                // _buildIconButton(
+                //   context: context,
+                //   icon: Icons.language,
+                //   tooltip: 'وب‌سایت',
+                //   onPressed: () => _launchUrl('https://example.com'),
+                // ),
                 _buildIconButton(
-                  context,
-                  icon: Icons.language,
-                  onPressed: () => _launchUrl('https://example.com'),
-                ),
-                _buildIconButton(
-                  context,
+                  context: context,
                   icon: Icons.code,
-                  onPressed: () => _launchUrl('https://github.com/yourrepo'),
+                  tooltip: 'گیت‌هاب',
+                  onPressed: () =>
+                      _launchUrl('https://github.com/MrPouyaSaad/nazmino'),
                 ),
               ],
             ),
+
             const SizedBox(height: 24),
 
             // Copyright
@@ -146,6 +155,21 @@ class AboutAppScreen extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  Future<void> _launchUrl(String url) async {
+    log('Attempting to launch: $url');
+    try {
+      final Uri uri = Uri.parse(url);
+      if (await canLaunchUrl(uri)) {
+        log('Can launch, proceeding...');
+        await launchUrl(uri, mode: LaunchMode.externalApplication);
+      } else {
+        log('Cannot launch: $uri');
+      }
+    } catch (e) {
+      log('Error launching URL: $e');
+    }
   }
 
   Widget _buildFeatureItem(
@@ -165,21 +189,50 @@ class AboutAppScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildIconButton(
-    BuildContext context, {
+  Widget _buildIconButton({
+    required BuildContext context,
     required IconData icon,
+    required String tooltip,
     required VoidCallback onPressed,
   }) {
-    return IconButton(
-      icon: Icon(icon),
-      color: Theme.of(context).colorScheme.primary,
-      onPressed: onPressed,
-    );
-  }
+    return TweenAnimationBuilder(
+      duration: const Duration(milliseconds: 200),
+      tween: Tween(begin: 1.0, end: 0.9),
+      builder: (context, value, child) {
+        return Transform.scale(scale: value, child: child);
+      },
+      child: InkWell(
+        borderRadius: BorderRadius.circular(16),
+        onTap: onPressed,
+        onHover: (hovering) {
+          // می‌توانید برای افکت‌های بیشتر از این استفاده کنید
+        },
+        child: Container(
+          padding: const EdgeInsets.all(12),
+          decoration: BoxDecoration(
+            color: Theme.of(context).colorScheme.primary.withOpacity(0.1),
+            borderRadius: BorderRadius.circular(16),
+            border: Border.all(
+              color: Theme.of(context).colorScheme.primary.withOpacity(0.3),
+              width: 1,
+            ),
+          ),
+          child: Tooltip(
+            message: tooltip,
+            waitDuration: const Duration(milliseconds: 500),
+            decoration: BoxDecoration(
+              color: Theme.of(context).colorScheme.primary,
+              borderRadius: BorderRadius.circular(8),
+            ),
 
-  Future<void> _launchUrl(String url) async {
-    // if (await canLaunchUrl(Uri.parse(url))) {
-    //   await launchUrl(Uri.parse(url));
-    // }
+            child: Icon(
+              icon,
+              color: Theme.of(context).colorScheme.primary,
+              size: 24,
+            ),
+          ),
+        ),
+      ).marginSymmetric(horizontal: 8, vertical: 2),
+    );
   }
 }

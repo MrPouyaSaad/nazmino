@@ -30,6 +30,7 @@ class AppThemes {
         elevation: 0,
         centerTitle: true,
       ),
+
       floatingActionButtonTheme: const FloatingActionButtonThemeData(
         backgroundColor: Color(0xFF1E6091),
         foregroundColor: Colors.white,
@@ -168,6 +169,7 @@ class AppThemes {
         elevation: 0,
         centerTitle: true,
       ),
+
       floatingActionButtonTheme: const FloatingActionButtonThemeData(
         backgroundColor: Color(0xFF1E6091),
         foregroundColor: Colors.white,

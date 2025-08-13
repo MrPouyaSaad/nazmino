@@ -1,25 +1,28 @@
+import 'package:nazmino/bloc/model/version.dart';
 import 'package:nazmino/bloc/source/version_datasource.dart';
 import 'package:nazmino/core/api/options.dart';
 
-final IVersionRepository versionRepository = VersionRepoostory(
+final IVersionRepository versionRepository = VersionRepository(
   VersionDataSource(ApiBaseData.httpClient),
 );
 
 abstract class IVersionRepository {
   Future<String> getLocalVersion();
-  Future<String?> getServerVersion();
+  Future<VersionInfo?> getServerVersionInfo();
   bool isServerVersionGreater(String local, String server);
 }
 
-class VersionRepoostory implements IVersionRepository {
+class VersionRepository implements IVersionRepository {
   final IVersionDataSource dataSource;
 
-  VersionRepoostory(this.dataSource);
+  VersionRepository(this.dataSource);
+
   @override
   Future<String> getLocalVersion() => dataSource.getLocalVersion();
 
   @override
-  Future<String?> getServerVersion() => dataSource.getServerVersion();
+  Future<VersionInfo?> getServerVersionInfo() =>
+      dataSource.getServerVersionInfo();
 
   @override
   bool isServerVersionGreater(String local, String server) =>

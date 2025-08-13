@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:dio/dio.dart';
+import 'package:nazmino/bloc/source/token_datasource.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ApiBaseData {
@@ -27,7 +28,7 @@ class ApiBaseData {
           InterceptorsWrapper(
             onRequest: (options, handler) async {
               try {
-                final token = _prefs.getString('token');
+                final token = _prefs.getString(TokenDataSource.tokenKey);
                 log('🔑 Retrieved token: ${token ?? "NULL"}');
 
                 if (token != null) {

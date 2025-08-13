@@ -13,7 +13,7 @@ class AuthResendCodeButton extends StatefulWidget {
 }
 
 class _AuthResendCodeButtonState extends State<AuthResendCodeButton> {
-  static const int _resendWaitSeconds = 60;
+  static const int _resendWaitSeconds = 65;
 
   Timer? _timer;
   int _secondsLeft = _resendWaitSeconds;

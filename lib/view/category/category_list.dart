@@ -33,7 +33,7 @@ class _TransactionCategoryWidgetState extends State<TransactionCategoryWidget> {
           if (state.isLoading) {
             return AppLoading();
           }
-          selectedCategory = selectedCategory ?? categories.first;
+          selectedCategory = selectedCategory ?? categories.last;
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -48,7 +48,7 @@ class _TransactionCategoryWidgetState extends State<TransactionCategoryWidget> {
                     if (index == categories.length) {
                       return _buildAddCategoryButton(context);
                     }
-                    final category = categories[index];
+                    final category = state.categories.reversed.toList()[index];
                     return Align(
                       alignment: Alignment.center,
                       child: InkWell(
@@ -58,12 +58,14 @@ class _TransactionCategoryWidgetState extends State<TransactionCategoryWidget> {
                         child: ChoiceChip(
                           showCheckmark: false,
                           label: Text(
-                            index == 0 ? AppMessages.all.tr : category.name,
+                            index == 0 && category.name == 'All'
+                                ? AppMessages.all.tr
+                                : category.name,
                           ),
                           selected: selectedCategory!.id == category.id,
                           onSelected: (selected) {
                             setState(() {
-                              selectedCategory = selected ? category : null;
+                              selectedCategory = category;
                             });
 
                             context.read<TransactionBloc>().add(

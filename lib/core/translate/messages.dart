@@ -100,4 +100,6 @@ class AppMessages {
   static const resendCode = 'resendCode';
   static const resendIn = 'resendIn';
   static const seconds = 'seconds';
+  static const emptyHistoryList = 'emptyHistoryList';
+  static const logOut = 'Log out';
 }

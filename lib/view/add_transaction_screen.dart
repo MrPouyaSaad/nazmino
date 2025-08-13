@@ -298,7 +298,7 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
                                                   .replaceAll(',', ''),
                                             ),
                                             _isIncome,
-                                            _selectedCategory!.id.toString(),
+                                            int.parse(_selectedCategory!.id),
                                             DateTime.now(),
                                           );
                                       BlocProvider.of<TransactionBloc>(
