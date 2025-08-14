@@ -176,7 +176,6 @@ class _SplashScreenState extends State<SplashScreen>
     final colorScheme = theme.colorScheme;
     final isDark = theme.brightness == Brightness.dark;
 
-    // انیمیشن کنترلر برای افکت‌های ورود
     final animationController = AnimationController(
       vsync: Navigator.of(context),
       duration: const Duration(milliseconds: 600),
@@ -187,7 +186,6 @@ class _SplashScreenState extends State<SplashScreen>
       curve: Curves.easeOutQuart,
     );
 
-    // اجرای انیمیشن پس از ساخت ویجت
     WidgetsBinding.instance.addPostFrameCallback((_) {
       animationController.forward();
     });
@@ -231,7 +229,6 @@ class _SplashScreenState extends State<SplashScreen>
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Handle bar با انیمیشن
                   Center(
                     child: Container(
                       width: 48,
@@ -244,7 +241,6 @@ class _SplashScreenState extends State<SplashScreen>
                     ),
                   ),
 
-                  // هدر با آیکون متحرک
                   SlideTransition(
                     position:
                         Tween<Offset>(
