@@ -26,6 +26,7 @@ class ThemeController extends GetxController {
   void _loadTheme() async {
     final prefs = await SharedPreferences.getInstance();
     final themePref = prefs.getString('themeMode') ?? 'system';
+
     if (themePref == 'light') {
       isDarkMode.value = false;
       Get.changeThemeMode(ThemeMode.light);
@@ -33,7 +34,6 @@ class ThemeController extends GetxController {
       isDarkMode.value = true;
       Get.changeThemeMode(ThemeMode.dark);
     } else {
-      // حالت سیستم
       isDarkMode.value = Get.isPlatformDarkMode;
       Get.changeThemeMode(ThemeMode.system);
     }
@@ -41,9 +41,11 @@ class ThemeController extends GetxController {
 
   void toggleTheme() async {
     isDarkMode.value = !isDarkMode.value;
-    Get.changeThemeMode(isDarkMode.value ? ThemeMode.dark : ThemeMode.light);
+    final newTheme = isDarkMode.value ? ThemeMode.dark : ThemeMode.light;
+
+    Get.changeThemeMode(newTheme);
 
     final prefs = await SharedPreferences.getInstance();
-    await prefs.setBool('isDarkMode', isDarkMode.value);
+    await prefs.setString('themeMode', isDarkMode.value ? 'dark' : 'light');
   }
 }
