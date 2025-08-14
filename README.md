@@ -12,7 +12,7 @@
     <img src="https://img.shields.io/badge/Flutter-3.x-blue?logo=flutter" alt="Flutter" />
   </a>
   <a href="https://pub.dev/">
-    <img src="https://img.shields.io/badge/Packages-GetX%20%7C%20Dio%20%7C%20SharedPrefs-green" alt="Packages" />
+    <img src="https://img.shields.io/badge/Packages-GetX%20%7C%20Dio%20%7C%20Bloc%20%7C%20Provider-green" alt="Packages" />
   </a>
   <a href="LICENSE">
     <img src="https://img.shields.io/badge/License-MIT-orange" alt="License" />
@@ -31,6 +31,8 @@
 - 🌐 **Multilingual** (English & فارسی)  
 - ☁️ **Online data sync** with backend API  
 - 🛠 **Custom categories management**  
+- 🕒 **Transaction history archive** with easy restore  
+- 🔄 **State management with GetX, Bloc, and Provider**  
 
 ---
 
@@ -41,9 +43,9 @@ The API handles:
 - Transaction CRUD operations
 - Categories management
 - Reports generation
+- History logs
 
 ---
-
 
 ## 🚀 Getting Started
 
