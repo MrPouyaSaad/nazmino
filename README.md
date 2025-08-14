@@ -1,29 +1,53 @@
-# Nazmino
+<p align="center">
+  <img src="assets/images/logo.png" alt="Nazmino Logo" width="120" />
+</p>
 
-Nazmino is a simple, modern, and user-friendly **personal finance tracking** app built with Flutter.
+<h1 align="center">Nazmino</h1>
+<p align="center">
+  <em>Simple • Modern • Personal Finance Tracker</em>
+</p>
 
-It helps users keep track of their income and expenses, categorize their transactions, and visualize spending with summary reports.
+<p align="center">
+  <a href="https://flutter.dev/">
+    <img src="https://img.shields.io/badge/Flutter-3.x-blue?logo=flutter" alt="Flutter" />
+  </a>
+  <a href="https://pub.dev/">
+    <img src="https://img.shields.io/badge/Packages-GetX%20%7C%20Dio%20%7C%20SharedPrefs-green" alt="Packages" />
+  </a>
+  <a href="LICENSE">
+    <img src="https://img.shields.io/badge/License-MIT-orange" alt="License" />
+  </a>
+</p>
 
 ---
 
-##  Features
+## ✨ Features
 
-- Add, edit, and delete transactions
-- Categorize income and expenses
-- View total reports and daily breakdowns
-- Filter transactions by category
-- Dark mode support
-- Multilingual (English & فارسی)
-- Persistent storage with SQLite (`drift`)
-- Transaction history archive
-- Custom categories management
+- 📥 **Add, edit, and delete transactions**  
+- 🏷 **Categorize income and expenses**  
+- 📊 **View reports and daily breakdowns**  
+- 🔍 **Filter by category**  
+- 🌙 **Dark mode support**  
+- 🌐 **Multilingual** (English & فارسی)  
+- ☁️ **Online data sync** with backend API  
+- 🛠 **Custom categories management**  
 
 ---
 
-##  Getting Started
+## 📡 Backend API
+Nazmino fetches and stores data through a **secure REST API**.  
+The API handles:
+- User authentication
+- Transaction CRUD operations
+- Categories management
+- Reports generation
 
-To run this project locally:
+---
 
+
+## 🚀 Getting Started
+
+### 1. Clone the repository
 ```bash
-flutter pub get
-flutter run
+git clone https://github.com/MrPouyaSaad/nazmino
+cd nazmino
