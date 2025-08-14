@@ -1,4 +1,3 @@
-import 'package:appcheck/appcheck.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
@@ -59,6 +58,7 @@ class _SplashScreenState extends State<SplashScreen>
               // نمایش دیالوگ آپدیت اجباری
               _showUpdateSheet(
                 context: context,
+                state: state,
                 serverVersion: state.serverVersion,
                 localVersion: state.localVersion,
                 updateUrl: state.updateUrl,
@@ -69,6 +69,7 @@ class _SplashScreenState extends State<SplashScreen>
             } else if (state.isOptionalUpdate) {
               // نمایش دیالوگ آپدیت اختیاری
               _showUpdateSheet(
+                state: state,
                 context: context,
                 changelog: state.changelog,
                 serverVersion: state.serverVersion,
@@ -76,7 +77,6 @@ class _SplashScreenState extends State<SplashScreen>
                 updateUrl: state.updateUrl,
                 isForced: false,
               );
-              return;
             } else if (state.hasValidToken) {
               Get.off(() => const TransactionsListScreen());
             } else {
@@ -154,6 +154,7 @@ class _SplashScreenState extends State<SplashScreen>
   void _showUpdateSheet({
     required BuildContext context,
     required bool isForced,
+    required SplashState state,
     required String? serverVersion,
     required String? localVersion,
     required String? updateUrl,
@@ -266,10 +267,10 @@ class _SplashScreenState extends State<SplashScreen>
                               gradient: LinearGradient(
                                 colors: [
                                   isForced
-                                      ? colorScheme.errorContainer
+                                      ? colorScheme.tertiary
                                       : colorScheme.primaryContainer,
                                   isForced
-                                      ? colorScheme.error
+                                      ? colorScheme.tertiary
                                       : colorScheme.primary,
                                 ],
                                 begin: Alignment.topLeft,
@@ -280,7 +281,7 @@ class _SplashScreenState extends State<SplashScreen>
                                 BoxShadow(
                                   color:
                                       (isForced
-                                              ? colorScheme.error
+                                              ? colorScheme.tertiary
                                               : colorScheme.primary)
                                           .withOpacity(0.3),
                                   blurRadius: 10,
@@ -550,9 +551,15 @@ class _SplashScreenState extends State<SplashScreen>
                                 ),
                               ),
                               onPressed: () {
-                                animationController.reverse().then(
-                                  (_) => Get.back(),
-                                );
+                                animationController.reverse().then((_) {
+                                  if (state.hasValidToken) {
+                                    Get.off(
+                                      () => const TransactionsListScreen(),
+                                    );
+                                  } else {
+                                    Get.off(() => const AuthScreen());
+                                  }
+                                });
                               },
                               child: Text(
                                 'فعلاً نه، ممنون',

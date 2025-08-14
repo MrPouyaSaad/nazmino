@@ -1,7 +1,6 @@
 import 'dart:developer';
 
 import 'package:dio/dio.dart';
-import 'package:nazmino/core/api/validator.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 abstract class ITokenDataSource {

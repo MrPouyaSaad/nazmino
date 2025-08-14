@@ -29,8 +29,8 @@ class TransactionBloc extends Bloc<TransactionEvent, TransactionState> {
     emit(TransactionLoading());
     try {
       final transactions = await _transactionRepository.getTransactions();
-      _allTransactions = transactions; // ذخیره لیست اصلی
-      emit(TransactionLoaded(transactions: transactions));
+      _allTransactions = transactions;
+      emit(TransactionLoaded(transactions: _allTransactions));
     } catch (_) {
       emit(TransactionError());
     }
@@ -46,9 +46,9 @@ class TransactionBloc extends Bloc<TransactionEvent, TransactionState> {
         final newTransactions = await _transactionRepository.addTransactions(
           event.transaction,
         );
-        _allTransactions = newTransactions; // آپدیت لیست اصلی
+        _allTransactions = newTransactions;
         emit(AddTransactionSuccess());
-        emit(TransactionLoaded(transactions: newTransactions));
+        emit(TransactionLoaded(transactions: _allTransactions));
       } catch (_) {
         emit(TransactionError());
       }

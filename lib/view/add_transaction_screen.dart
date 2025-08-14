@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:nazmino/core/api/validator.dart';
+import 'package:nazmino/core/extensions/price_extensions.dart';
 import 'package:nazmino/core/input_formatter.dart';
 import 'package:nazmino/core/translate/messages.dart';
 import 'package:nazmino/bloc/model/transaction.dart';
@@ -37,7 +38,7 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
   void initState() {
     if (widget.transaction != null) {
       _titleController.text = widget.transaction!.title;
-      _amountController.text = widget.transaction!.amount.toString();
+      _amountController.text = widget.transaction!.amount.toPriceString();
       _isIncome = widget.transaction!.isInCome;
 
       // Set initial category from transaction or passed category
@@ -55,7 +56,7 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
           : null;
       _selectedCategory =
           sCat ??
-          (widget.categories.isNotEmpty ? widget.categories.first : null);
+          (widget.categories.isNotEmpty ? widget.categories.last : null);
     }
 
     super.initState();

@@ -180,7 +180,7 @@ class _TransactionsListViewState extends State<_TransactionsListView> {
         ? (categoryBloc.state as CategorySuccess).categories
         : <TransactionCategory>[];
     final category = categories.firstWhere(
-      (c) => c.id == transaction.categoryId,
+      (c) => c.id == transaction.categoryId.toString(),
     );
     Get.bottomSheet(
       AddTransactionScreen(

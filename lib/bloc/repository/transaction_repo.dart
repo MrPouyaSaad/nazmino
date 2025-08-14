@@ -19,8 +19,9 @@ class TransactionRepository implements ITransactionRepository {
   TransactionRepository(this.dataSource);
   @override
   Future<List<Transaction>> addTransactions(Transaction transaction) async {
-    dataSource.addTransactions(transaction);
-    return dataSource.getTransactions();
+    await dataSource.addTransactions(transaction);
+    final tList = await dataSource.getTransactions();
+    return tList;
   }
 
   @override
