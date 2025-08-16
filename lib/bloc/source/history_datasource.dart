@@ -31,7 +31,7 @@ class HistoryDataSource implements IHistoryDataSource {
     final response = await httpClient.get('/history');
     validateResponse(response);
     final List<Transaction> transactions = [];
-    for (var transaction in response.data) {
+    for (var transaction in response.data['data']) {
       transactions.add(Transaction.fromJson(transaction));
     }
     return transactions;

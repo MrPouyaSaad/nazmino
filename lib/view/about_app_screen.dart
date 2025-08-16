@@ -90,7 +90,7 @@ class AboutAppScreen extends StatelessWidget {
                     ),
                     _buildFeatureItem(
                       context,
-                      icon: CupertinoIcons.wifi_slash,
+                      icon: CupertinoIcons.wifi,
                       text: AppMessages.feature4.tr,
                     ),
                   ],

@@ -6,6 +6,7 @@ import '../model/transaction.dart';
 abstract class ITransactionDataSource {
   Future<List<Transaction>> getTransactions();
   Future<Transaction> addTransactions(Transaction transaction);
+  Future<Transaction> editTransactions(Transaction transaction, String id);
   Future<void> remove(String id);
   Future<void> removeAll();
 }
@@ -22,7 +23,7 @@ class TransactionDatasource implements ITransactionDataSource {
     validateResponse(response);
 
     final List<Transaction> transactions = [];
-    for (var transaction in response.data) {
+    for (var transaction in response.data['data']) {
       transactions.add(Transaction.fromJson(transaction));
     }
     log(
@@ -79,5 +80,25 @@ class TransactionDatasource implements ITransactionDataSource {
       '[TransactionDatasource] Transaction added with id: ${newTransaction.id}',
     );
     return newTransaction;
+  }
+
+  @override
+  Future<Transaction> editTransactions(
+    Transaction transaction,
+    String id,
+  ) async {
+    final type = transaction.isInCome ? 'income' : 'expense';
+    final res = await httpClient.put(
+      '/transactions/$id',
+      data: {
+        "title": transaction.title,
+        "amount": transaction.amount,
+        "type": type,
+        "category_id": transaction.categoryId,
+        "date": transaction.date,
+      },
+    );
+    validateResponse(res);
+    return Transaction.fromJson(res.data);
   }
 }

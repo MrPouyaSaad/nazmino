@@ -1,7 +1,29 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+
+import '../../core/translate/messages.dart';
 
 class AuthTerms extends StatelessWidget {
   const AuthTerms({super.key});
+
+  void _showDialog(BuildContext context, String title, String content) {
+    final theme = Theme.of(context);
+    showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: Text(title, style: theme.textTheme.titleMedium),
+        content: SingleChildScrollView(
+          child: Text(content, style: theme.textTheme.bodyMedium),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Get.back(),
+            child: Text(AppMessages.ok.tr),
+          ),
+        ],
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -13,24 +35,42 @@ class AuthTerms extends StatelessWidget {
           color: theme.colorScheme.onSurface.withOpacity(0.6),
         ),
         children: [
-          const TextSpan(text: 'با ادامه، شما '),
-          TextSpan(
-            text: 'شرایط استفاده',
-            style: TextStyle(
-              color: theme.colorScheme.primary,
-              decoration: TextDecoration.underline,
+          TextSpan(text: AppMessages.termsPrefix.tr),
+          WidgetSpan(
+            child: GestureDetector(
+              onTap: () => _showDialog(
+                context,
+                AppMessages.termsOfUse.tr,
+                AppMessages.termsOfUseContent.tr,
+              ),
+              child: Text(
+                AppMessages.termsOfUse.tr,
+                style: TextStyle(
+                  color: theme.colorScheme.primary,
+                  decoration: TextDecoration.underline,
+                ),
+              ),
             ),
           ),
-          const TextSpan(text: ' و '),
-          TextSpan(
-            text: 'سیاست حفظ حریم خصوصی',
-            style: TextStyle(
-              color: theme.colorScheme.primary,
-              decoration: TextDecoration.underline,
-              decorationStyle: TextDecorationStyle.solid,
+          TextSpan(text: AppMessages.and.tr),
+          WidgetSpan(
+            child: GestureDetector(
+              onTap: () => _showDialog(
+                context,
+                AppMessages.privacyPolicy.tr,
+                AppMessages.privacyPolicyContent.tr,
+              ),
+              child: Text(
+                AppMessages.privacyPolicy.tr,
+                style: TextStyle(
+                  color: theme.colorScheme.primary,
+                  decoration: TextDecoration.underline,
+                  decorationStyle: TextDecorationStyle.solid,
+                ),
+              ),
             ),
           ),
-          const TextSpan(text: ' ما را می‌پذیرید.'),
+          TextSpan(text: AppMessages.termsSuffix.tr),
         ],
       ),
     );

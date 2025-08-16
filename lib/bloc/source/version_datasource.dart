@@ -20,9 +20,9 @@ class VersionDataSource implements IVersionDataSource {
 
   @override
   Future<VersionInfo?> getServerVersionInfo() async {
-    final res = await httpClient.get('/version');
-    validateResponse(res);
     try {
+      final res = await httpClient.get('/version');
+      validateResponse(res);
       return VersionInfo.fromJson(res.data);
     } catch (e) {
       return null;

@@ -8,7 +8,7 @@ final ICategoryRepository categoryRepository = CategoryRepository(
 );
 
 abstract class ICategoryRepository {
-  Future<List<TransactionCategory>> getCategories();
+  Future<TransactionCategoryListModel> getCategories();
   Future<void> addCategory(String name);
   Future<void> deleteCategory(String id);
 }
@@ -19,7 +19,7 @@ class CategoryRepository implements ICategoryRepository {
   CategoryRepository({required this.dataSource});
 
   @override
-  Future<List<TransactionCategory>> getCategories() =>
+  Future<TransactionCategoryListModel> getCategories() =>
       dataSource.getCategories();
 
   @override

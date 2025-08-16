@@ -51,7 +51,7 @@ class TransactionTile extends StatelessWidget {
     final theme = Theme.of(context);
 
     return GestureDetector(
-      onTap: transaction.isDeleting ? null : onTap,
+      onTap: (transaction.isDeleting || isFromHistory) ? null : onTap,
       onLongPress: transaction.isDeleting
           ? null
           : () => _confirmDelete(context),

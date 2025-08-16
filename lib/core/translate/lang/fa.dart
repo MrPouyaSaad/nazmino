@@ -96,5 +96,44 @@ class FaKeys extends AppTranslationKeys {
     AppMessages.seconds: 'ثانیه',
     AppMessages.emptyHistoryList: 'تاریخچه خالی است!',
     AppMessages.logOut: 'خروج از حساب',
+    AppMessages.updateRequired: 'آپدیت ضروری',
+    AppMessages.newVersionAvailable: 'نسخه جدید موجود است!',
+    AppMessages.betterExperience: 'تجربه بهتری در انتظار شماست',
+    AppMessages.tryAgain: 'تلاش مجدد',
+
+    AppMessages.currentVersion: 'نسخه فعلی',
+    AppMessages.newVersion: 'نسخه جدید',
+    AppMessages.changelogTitle: 'تغییرات نسخه جدید:',
+    AppMessages.changelogItem1: 'بهینه‌سازی عملکرد و سرعت برنامه',
+    AppMessages.changelogItem2: 'رفع مشکلات گزارش شده توسط کاربران',
+    AppMessages.downloadAndInstallUpdate: 'دانلود و نصب آپدیت',
+    AppMessages.maybeLater: 'فعلاً نه، ممنون',
+    AppMessages.errorTitle: 'خطا',
+    AppMessages.cannotOpenUpdateLink: 'امکان باز کردن لینک آپدیت وجود ندارد',
+    AppMessages.errorLaunchingUpdateLink: 'خطا در اجرای لینک آپدیت',
+    AppMessages.termsPrefix: 'با ادامه، شما ',
+    AppMessages.termsOfUse: 'شرایط استفاده',
+    AppMessages.and: ' و ',
+    AppMessages.privacyPolicy: 'سیاست حفظ حریم خصوصی',
+    AppMessages.termsSuffix: ' ما را می‌پذیرید.',
+    AppMessages.termsOfUseContent: '''
+با استفاده از اپلیکیشن Nazmino شما موافقت می‌کنید که:
+
+1. این اپلیکیشن تنها برای مدیریت مالی شخصی شما طراحی شده است و مسئولیتی در قبال تصمیمات مالی شما ندارد.  
+2. ورود به اپلیکیشن از طریق شماره موبایل و کد یکبار مصرف (OTP) انجام می‌شود و شما مسئول حفظ امنیت شماره موبایل خود هستید.  
+3. هرگونه سوءاستفاده از اپلیکیشن (از جمله دسترسی غیرمجاز یا انتشار داده‌های دیگران) ممنوع است.  
+4. توسعه‌دهندگان حق دارند در هر زمان نسبت به تغییر یا توقف خدمات اقدام کنند.  
+5. استفاده شما از اپ به منزله پذیرش تمامی تغییرات بعدی در شرایط استفاده خواهد بود.  
+''',
+
+    AppMessages.privacyPolicyContent: '''
+ما در "نظمینو" به حریم خصوصی شما اهمیت می‌دهیم:
+
+1. اطلاعات شخصی شما (مانند شماره موبایل، تراکنش‌ها) فقط برای ارائه خدمات اپ استفاده می‌شود.  
+2. ما هیچ‌گاه اطلاعات شما را بدون رضایت‌تان به اشخاص ثالث نمی‌فروشیم یا منتقل نمی‌کنیم.  
+3. داده‌های شما از طریق ارتباط امن (HTTPS) به سرور منتقل می‌شوند.  
+4. شما می‌توانید در هر زمان درخواست حذف حساب کاربری خود را ثبت کنید.  
+5. با استفاده از اپ، شما با ذخیره‌سازی و پردازش داده‌ها بر اساس این سیاست موافقت می‌کنید.  
+''',
   };
 }

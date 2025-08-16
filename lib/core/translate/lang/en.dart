@@ -95,5 +95,45 @@ class EnKeys extends AppTranslationKeys {
     AppMessages.seconds: 'Sec',
     AppMessages.emptyHistoryList: 'History Is Empty!',
     AppMessages.logOut: 'Logout',
+    AppMessages.updateRequired: 'Update required',
+    AppMessages.newVersionAvailable: 'New version available!',
+    AppMessages.betterExperience: 'A better experience is waiting for you',
+    AppMessages.currentVersion: 'Current version',
+    AppMessages.newVersion: 'New version',
+    AppMessages.changelogTitle: 'What\'s new:',
+    AppMessages.changelogItem1:
+        'Performance optimization and app speed improvements',
+    AppMessages.changelogItem2: 'Fixed reported user issues',
+    AppMessages.downloadAndInstallUpdate: 'Download and install update',
+    AppMessages.maybeLater: 'Maybe later',
+    AppMessages.tryAgain: 'Try again',
+    AppMessages.errorTitle: 'Error',
+    AppMessages.cannotOpenUpdateLink: 'Cannot open update link',
+    AppMessages.errorLaunchingUpdateLink: 'Error launching update link',
+    AppMessages.termsPrefix: 'By continuing, you agree to our ',
+    AppMessages.termsOfUse: 'Terms of Use',
+    AppMessages.and: ' and ',
+    AppMessages.privacyPolicy: 'Privacy Policy',
+    AppMessages.termsSuffix: '.',
+
+    AppMessages.termsOfUseContent: '''
+By using the Nazmino app, you agree that:
+
+1. This app is designed solely for your personal finance management, and we are not responsible for your financial decisions.  
+2. Login is done via your mobile number and a one-time password (OTP). You are responsible for keeping your phone number secure.  
+3. Any misuse of the app (including unauthorized access or sharing other users’ data) is strictly prohibited.  
+4. The developers reserve the right to modify or discontinue the services at any time.  
+5. Continued use of the app means you accept future updates to these Terms of Use.  
+''',
+
+    AppMessages.privacyPolicyContent: '''
+At 'Nazmino', we care about your privacy:
+
+1. Your personal information (such as name, email, transactions) is used only to provide the app’s services.  
+2. We never sell or share your data with third parties without your consent.  
+3. Your data is transmitted securely via HTTPS.  
+4. You can request to delete your account and data at any time.  
+5. By using the app, you consent to the storage and processing of your data under this Privacy Policy.  
+''',
   };
 }

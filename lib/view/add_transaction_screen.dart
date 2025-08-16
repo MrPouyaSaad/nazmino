@@ -21,7 +21,7 @@ class AddTransactionScreen extends StatefulWidget {
 
   final Transaction? transaction;
   final TransactionCategory? category;
-  final List<TransactionCategory> categories;
+  final TransactionCategoryListModel categories;
 
   @override
   State<AddTransactionScreen> createState() => _AddTransactionScreenState();
@@ -42,21 +42,23 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
       _isIncome = widget.transaction!.isInCome;
 
       // Set initial category from transaction or passed category
-      _selectedCategory = widget.categories.firstWhere(
+      _selectedCategory = widget.categories.categoryList.firstWhere(
         (c) => c.id == (widget.transaction?.categoryId ?? widget.category?.id),
-        orElse: () => widget.categories.first,
+        orElse: () => widget.categories.categoryList.last,
       );
     } else if (widget.category != null) {
       _selectedCategory = widget.category;
     } else {
       final sCat = context.read<TransactionBloc>().selectedCategory != null
-          ? widget.categories.firstWhere(
+          ? widget.categories.categoryList.firstWhere(
               (c) => c.id == context.read<TransactionBloc>().selectedCategory,
             )
           : null;
       _selectedCategory =
           sCat ??
-          (widget.categories.isNotEmpty ? widget.categories.last : null);
+          (widget.categories.categoryList.isNotEmpty
+              ? widget.categories.categoryList.last
+              : null);
     }
 
     super.initState();
@@ -170,9 +172,9 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
                                       ),
                               ),
                             ),
-                            if (widget.categories.isNotEmpty)
+                            if (widget.categories.categoryList.isNotEmpty)
                               const SizedBox(height: 16.0),
-                            if (widget.categories.isNotEmpty)
+                            if (widget.categories.categoryList.isNotEmpty)
                               DropdownButtonFormField<TransactionCategory>(
                                 value: _selectedCategory,
                                 decoration: InputDecoration(
@@ -187,11 +189,14 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
                                           0.5,
                                         ),
                                 ),
-                                items: widget.categories.map((category) {
+                                items: widget.categories.categoryList.map((
+                                  category,
+                                ) {
                                   return DropdownMenuItem<TransactionCategory>(
                                     value: category,
                                     child: Text(
-                                      category.name == 'All'
+                                      category.name == 'All' ||
+                                              category.name == 'همه'
                                           ? AppMessages.all.tr
                                           : category.name,
                                     ),
@@ -267,9 +272,7 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
                         child: BlocConsumer<TransactionBloc, TransactionState>(
                           listener: (context, state) {
                             if (state is AddTransactionSuccess) {
-                              Navigator.of(
-                                context,
-                              ).pop(); // بستن صفحه پس از موفقیت
+                              Navigator.of(context).pop();
                             }
                             if (state is AddTransactionError) {
                               ScaffoldMessenger.of(context).showSnackBar(
@@ -290,21 +293,44 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
                               onPressed: state is AddTransactionLoading
                                   ? null
                                   : () {
-                                      final Transaction transaction =
-                                          Transaction(
-                                            null,
-                                            _titleController.text,
-                                            double.parse(
-                                              (_amountController.text)
-                                                  .replaceAll(',', ''),
-                                            ),
-                                            _isIncome,
-                                            int.parse(_selectedCategory!.id),
-                                            DateTime.now(),
-                                          );
-                                      BlocProvider.of<TransactionBloc>(
-                                        context,
-                                      ).add(AddTransaction(transaction));
+                                      if (widget.transaction != null) {
+                                        final Transaction transaction =
+                                            Transaction(
+                                              widget.transaction!.id,
+                                              _titleController.text,
+                                              double.parse(
+                                                (_amountController.text)
+                                                    .replaceAll(',', ''),
+                                              ),
+                                              _isIncome,
+                                              int.parse(_selectedCategory!.id),
+                                              DateTime.now(),
+                                            );
+                                        BlocProvider.of<TransactionBloc>(
+                                          context,
+                                        ).add(
+                                          EditTransaction(
+                                            transaction,
+                                            widget.transaction!.id!,
+                                          ),
+                                        );
+                                      } else {
+                                        final Transaction transaction =
+                                            Transaction(
+                                              null,
+                                              _titleController.text,
+                                              double.parse(
+                                                (_amountController.text)
+                                                    .replaceAll(',', ''),
+                                              ),
+                                              _isIncome,
+                                              int.parse(_selectedCategory!.id),
+                                              DateTime.now(),
+                                            );
+                                        BlocProvider.of<TransactionBloc>(
+                                          context,
+                                        ).add(AddTransaction(transaction));
+                                      }
                                     },
                               child: state is AddTransactionLoading
                                   ? AppLoading()

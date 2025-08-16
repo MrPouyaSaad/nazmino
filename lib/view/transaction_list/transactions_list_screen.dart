@@ -157,7 +157,7 @@ class _TransactionsListViewState extends State<_TransactionsListView> {
     final categoryBloc = BlocProvider.of<CategoryBloc>(context);
     final categories = categoryBloc.state is CategorySuccess
         ? (categoryBloc.state as CategorySuccess).categories
-        : <TransactionCategory>[];
+        : TransactionCategoryListModel(categoryList: [], count: 0);
 
     Get.bottomSheet(
       AddTransactionScreen(categories: categories),
@@ -176,10 +176,11 @@ class _TransactionsListViewState extends State<_TransactionsListView> {
 
   void _showEditTransaction(BuildContext context, Transaction transaction) {
     final categoryBloc = BlocProvider.of<CategoryBloc>(context);
-    final categories = categoryBloc.state is CategorySuccess
+    final categories = (categoryBloc.state is CategorySuccess)
         ? (categoryBloc.state as CategorySuccess).categories
-        : <TransactionCategory>[];
-    final category = categories.firstWhere(
+        : TransactionCategoryListModel(categoryList: [], count: 0);
+
+    final category = categories.categoryList.firstWhere(
       (c) => c.id == transaction.categoryId.toString(),
     );
     Get.bottomSheet(

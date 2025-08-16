@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
 import 'package:nazmino/core/api/validator.dart';
+import 'package:nazmino/core/translate/messages.dart';
 import 'package:nazmino/widgets/error_widget.dart';
 import 'package:nazmino/widgets/loading_widget.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -175,7 +176,6 @@ class _SplashScreenState extends State<SplashScreen>
 
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
-    final isDark = theme.brightness == Brightness.dark;
 
     final animationController = AnimationController(
       vsync: Navigator.of(context),
@@ -304,15 +304,15 @@ class _SplashScreenState extends State<SplashScreen>
                               children: [
                                 Text(
                                   isForced
-                                      ? 'آپدیت ضروری'
-                                      : 'نسخه جدید موجود است!',
+                                      ? AppMessages.updateRequired.tr
+                                      : AppMessages.newVersionAvailable.tr,
                                   style: theme.textTheme.titleLarge?.copyWith(
                                     fontWeight: FontWeight.bold,
                                     color: colorScheme.onSurface,
                                   ),
                                 ),
                                 Text(
-                                  'تجربه بهتری در انتظار شماست',
+                                  AppMessages.betterExperience.tr,
                                   style: theme.textTheme.bodySmall?.copyWith(
                                     color: colorScheme.onSurfaceVariant,
                                   ),
@@ -327,7 +327,6 @@ class _SplashScreenState extends State<SplashScreen>
 
                   const SizedBox(height: 20),
 
-                  // نسخه‌ها با افکت موجی
                   ScaleTransition(
                     scale: animationController,
                     child: FadeTransition(
@@ -348,7 +347,7 @@ class _SplashScreenState extends State<SplashScreen>
                             Column(
                               children: [
                                 Text(
-                                  'نسخه فعلی',
+                                  AppMessages.currentVersion.tr,
                                   style: theme.textTheme.bodySmall?.copyWith(
                                     color: colorScheme.onSurfaceVariant,
                                   ),
@@ -372,7 +371,7 @@ class _SplashScreenState extends State<SplashScreen>
                             Column(
                               children: [
                                 Text(
-                                  'نسخه جدید',
+                                  AppMessages.newVersion.tr,
                                   style: theme.textTheme.bodySmall?.copyWith(
                                     color: colorScheme.primary,
                                   ),
@@ -394,7 +393,6 @@ class _SplashScreenState extends State<SplashScreen>
 
                   const SizedBox(height: 24),
 
-                  // عنوان تغییرات
                   SlideTransition(
                     position:
                         Tween<Offset>(
@@ -421,7 +419,7 @@ class _SplashScreenState extends State<SplashScreen>
                           ),
                           const SizedBox(width: 8),
                           Text(
-                            'تغییرات نسخه جدید:',
+                            AppMessages.changelogTitle.tr,
                             style: theme.textTheme.titleMedium?.copyWith(
                               fontWeight: FontWeight.bold,
                               color: colorScheme.onSurface,
@@ -434,9 +432,9 @@ class _SplashScreenState extends State<SplashScreen>
 
                   const SizedBox(height: 12),
 
-                  // لیست تغییرات با انیمیشن پلکانی
                   ...List.generate(changelog.length, (index) {
                     final intervalStart = 0.4 + (index * 0.1);
+                    final bool isFa = Get.locale == Locale('fa', 'IR');
                     return SlideTransition(
                       position:
                           Tween<Offset>(
@@ -467,7 +465,9 @@ class _SplashScreenState extends State<SplashScreen>
                               const SizedBox(width: 12),
                               Expanded(
                                 child: Text(
-                                  changelog[index].fa,
+                                  isFa
+                                      ? changelog[index].fa
+                                      : changelog[index].en,
                                   style: theme.textTheme.bodyMedium?.copyWith(
                                     color: colorScheme.onSurface,
                                   ),
@@ -482,7 +482,6 @@ class _SplashScreenState extends State<SplashScreen>
 
                   const SizedBox(height: 28),
 
-                  // دکمه‌های اقدام
                   ScaleTransition(
                     scale: Tween<double>(begin: 0.8, end: 1.0).animate(
                       CurvedAnimation(
@@ -526,7 +525,7 @@ class _SplashScreenState extends State<SplashScreen>
                                   const Icon(Icons.download_rounded, size: 22),
                                   const SizedBox(width: 8),
                                   Text(
-                                    'دانلود و نصب آپدیت',
+                                    AppMessages.downloadAndInstallUpdate.tr,
                                     style: theme.textTheme.bodyLarge?.copyWith(
                                       fontWeight: FontWeight.bold,
                                       color: isForced
@@ -562,7 +561,7 @@ class _SplashScreenState extends State<SplashScreen>
                                 });
                               },
                               child: Text(
-                                'فعلاً نه، ممنون',
+                                AppMessages.maybeLater.tr,
                                 style: theme.textTheme.bodyMedium?.copyWith(
                                   color: colorScheme.onSurfaceVariant,
                                 ),
@@ -604,10 +603,13 @@ class _SplashScreenState extends State<SplashScreen>
           mode: LaunchMode.externalApplication,
         );
       } else {
-        Get.snackbar('خطا', 'امکان باز کردن لینک آپدیت وجود ندارد');
+        Get.snackbar(AppMessages.error.tr, AppMessages.cannotOpenUpdateLink.tr);
       }
     } catch (e) {
-      Get.snackbar('خطا', 'خطا در اجرای لینک آپدیت');
+      Get.snackbar(
+        AppMessages.error.tr,
+        AppMessages.errorLaunchingUpdateLink.tr,
+      );
     }
   }
 
@@ -615,12 +617,12 @@ class _SplashScreenState extends State<SplashScreen>
     showDialog(
       context: context,
       builder: (_) => AlertDialog(
-        title: const Text('خطا'),
+        title: Text(AppMessages.error.tr),
         content: Text(message),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(),
-            child: const Text('باشه'),
+            child: Text(AppMessages.ok.tr),
           ),
         ],
       ),

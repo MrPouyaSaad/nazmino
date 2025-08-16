@@ -25,15 +25,15 @@ class _TransactionCategoryWidgetState extends State<TransactionCategoryWidget> {
     return BlocBuilder<CategoryBloc, CategoryState>(
       builder: (context, state) {
         if (state is CategoryLoading) {
-          return AppLoading();
+          return AppLoading().marginOnly(top: 8);
         }
         if (state is CategorySuccess) {
           final categories = state.categories;
 
           if (state.isLoading) {
-            return AppLoading();
+            return AppLoading().marginOnly(top: 8);
           }
-          selectedCategory = selectedCategory ?? categories.last;
+          selectedCategory = selectedCategory ?? categories.categoryList.last;
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -43,12 +43,13 @@ class _TransactionCategoryWidgetState extends State<TransactionCategoryWidget> {
                   physics: const BouncingScrollPhysics(),
                   scrollDirection: Axis.horizontal,
                   padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
-                  itemCount: categories.length + 1,
+                  itemCount: categories.count + 1,
                   itemBuilder: (context, index) {
-                    if (index == categories.length) {
+                    if (index == categories.count) {
                       return _buildAddCategoryButton(context);
                     }
-                    final category = state.categories.reversed.toList()[index];
+                    final category = state.categories.categoryList.reversed
+                        .toList()[index];
                     return Align(
                       alignment: Alignment.center,
                       child: InkWell(
@@ -58,7 +59,7 @@ class _TransactionCategoryWidgetState extends State<TransactionCategoryWidget> {
                         child: ChoiceChip(
                           showCheckmark: false,
                           label: Text(
-                            index == 0 && category.name == 'All'
+                            category.name == 'All' || category.name == 'همه'
                                 ? AppMessages.all.tr
                                 : category.name,
                           ),

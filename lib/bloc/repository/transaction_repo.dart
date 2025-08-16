@@ -9,6 +9,11 @@ final ITransactionRepository transactionRepository = TransactionRepository(
 abstract class ITransactionRepository {
   Future<List<Transaction>> getTransactions();
   Future<List<Transaction>> addTransactions(Transaction transaction);
+  Future<List<Transaction>> editTransactions(
+    Transaction transaction,
+    String id,
+  );
+
   Future<void> remove(String id);
   Future<void> removeAll();
 }
@@ -32,4 +37,14 @@ class TransactionRepository implements ITransactionRepository {
 
   @override
   Future<void> removeAll() => dataSource.removeAll();
+
+  @override
+  Future<List<Transaction>> editTransactions(
+    Transaction transaction,
+    String id,
+  ) async {
+    await dataSource.editTransactions(transaction, id);
+    final tList = await dataSource.getTransactions();
+    return tList;
+  }
 }

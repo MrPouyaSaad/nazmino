@@ -10,7 +10,7 @@ sealed class CategoryState extends Equatable {
 final class CategoryLoading extends CategoryState {}
 
 final class CategorySuccess extends CategoryState {
-  final List<TransactionCategory> categories;
+  final TransactionCategoryListModel categories;
   final bool isLoading;
 
   const CategorySuccess(this.categories, {this.isLoading = false});

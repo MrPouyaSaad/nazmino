@@ -4,7 +4,7 @@ import 'package:nazmino/core/api/validator.dart';
 import '../model/category.dart';
 
 abstract class ICategoryDataSource {
-  Future<List<TransactionCategory>> getCategories();
+  Future<TransactionCategoryListModel> getCategories();
   Future<void> addCategory(String name);
   Future<void> deleteCategory(String id);
 }
@@ -46,20 +46,19 @@ class CategoryDataSource implements ICategoryDataSource {
   }
 
   @override
-  Future<List<TransactionCategory>> getCategories() async {
+  Future<TransactionCategoryListModel> getCategories() async {
     log('[CategoryDataSource] getCategories() called');
     log('[CategoryDataSource] Request headers: ${httpClient.options.headers}');
     try {
       final res = await httpClient.get('/categories');
       log('[CategoryDataSource] GET /categories => ${res.statusCode}');
       log('[CategoryDataSource] Response headers: ${res.headers}');
+
       validateResponse(res);
 
-      final List<TransactionCategory> categories = [];
-      for (var item in res.data) {
-        categories.add(TransactionCategory.fromJson(item));
-      }
-      log('[CategoryDataSource] Retrieved ${categories.length} categories');
+      final categories = TransactionCategoryListModel.fromJson(res.data);
+
+      log('[CategoryDataSource] Retrieved ${categories.count} categories');
       return categories;
     } catch (e, stack) {
       log(

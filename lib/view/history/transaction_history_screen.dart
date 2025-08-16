@@ -5,6 +5,7 @@ import 'package:nazmino/bloc/repository/history_repo.dart';
 import 'package:nazmino/core/api/validator.dart';
 import 'package:nazmino/core/translate/messages.dart';
 import 'package:nazmino/view/history/bloc/history_bloc.dart';
+import 'package:nazmino/widgets/error_widget.dart';
 import 'package:nazmino/widgets/loading_widget.dart';
 import 'package:nazmino/widgets/transaction_tile.dart';
 
@@ -156,14 +157,7 @@ class _TransactionsListScreenState
                   ],
                 );
               } else if (state is HistoryLoadError) {
-                return Center(
-                  child: Text(
-                    errorMessage,
-                    style: TextStyle(
-                      color: Theme.of(context).colorScheme.error,
-                    ),
-                  ),
-                );
+                return AppErrorWidget(onRetry: () => _bloc.add(LoadHistory()));
               } else {
                 return const SizedBox.shrink();
               }

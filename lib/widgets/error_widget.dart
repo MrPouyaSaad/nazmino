@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:nazmino/core/api/validator.dart';
+import 'package:nazmino/core/translate/messages.dart';
 
 class AppErrorScreen extends StatelessWidget {
   final VoidCallback onRetry;
@@ -58,7 +59,7 @@ class AppErrorWidget extends StatelessWidget {
           ElevatedButton.icon(
             onPressed: onRetry,
             icon: const Icon(Icons.refresh),
-            label: const Text('تلاش مجدد'),
+            label: const Text(AppMessages.tryAgain),
           ),
         ],
       ),

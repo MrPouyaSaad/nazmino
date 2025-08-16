@@ -11,12 +11,12 @@ class TransactionBloc extends Bloc<TransactionEvent, TransactionState> {
   final ITransactionRepository _transactionRepository;
   String? selectedCategory;
 
-  // لیست اصلی تراکنش‌ها که همیشه کامل باقی می‌مونه
   List<Transaction> _allTransactions = [];
 
   TransactionBloc(this._transactionRepository) : super(TransactionLoading()) {
     on<TransactionsListScreenStarted>(_onLoadTransactions);
     on<AddTransaction>(_onAddTransaction);
+    on<EditTransaction>(_onEditTransaction);
     on<DeleteTransaction>(_onDeleteTransaction);
     on<DeleteAllTransactions>(_onDeleteAllTransactions);
     on<FilterByCategory>(_onFilterByCategory);
@@ -45,6 +45,26 @@ class TransactionBloc extends Bloc<TransactionEvent, TransactionState> {
         emit(AddTransactionLoading());
         final newTransactions = await _transactionRepository.addTransactions(
           event.transaction,
+        );
+        _allTransactions = newTransactions;
+        emit(AddTransactionSuccess());
+        emit(TransactionLoaded(transactions: _allTransactions));
+      } catch (_) {
+        emit(TransactionError());
+      }
+    }
+  }
+
+  Future<void> _onEditTransaction(
+    EditTransaction event,
+    Emitter<TransactionState> emit,
+  ) async {
+    if (state is TransactionLoaded) {
+      try {
+        emit(AddTransactionLoading());
+        final newTransactions = await _transactionRepository.editTransactions(
+          event.transaction,
+          event.id,
         );
         _allTransactions = newTransactions;
         emit(AddTransactionSuccess());
@@ -86,7 +106,7 @@ class TransactionBloc extends Bloc<TransactionEvent, TransactionState> {
 
         _allTransactions = _allTransactions
             .where((t) => t.id != event.transactionId)
-            .toList(); // آپدیت لیست اصلی
+            .toList();
 
         emit(TransactionLoaded(transactions: updatedList));
       } catch (_) {
@@ -102,7 +122,7 @@ class TransactionBloc extends Bloc<TransactionEvent, TransactionState> {
     if (state is TransactionLoaded) {
       try {
         await _transactionRepository.removeAll();
-        _allTransactions = []; // خالی کردن لیست اصلی
+        _allTransactions = [];
         add(TransactionsListScreenStarted());
       } catch (_) {
         emit(TransactionError());

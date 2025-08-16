@@ -102,4 +102,27 @@ class AppMessages {
   static const seconds = 'seconds';
   static const emptyHistoryList = 'emptyHistoryList';
   static const logOut = 'Log out';
+  static const updateRequired = 'updateRequired';
+  static const newVersionAvailable = 'newVersionAvailable';
+  static const betterExperience = 'betterExperience';
+  static const currentVersion = 'currentVersion';
+  static const newVersion = 'newVersion';
+  static const changelogTitle = 'changelogTitle';
+  static const changelogItem1 = 'changelogItem1';
+  static const changelogItem1En = 'changelogItem1En';
+  static const changelogItem2 = 'changelogItem2';
+  static const changelogItem2En = 'changelogItem2En';
+  static const downloadAndInstallUpdate = 'downloadAndInstallUpdate';
+  static const maybeLater = 'maybeLater';
+  static const errorTitle = 'errorTitle';
+  static const cannotOpenUpdateLink = 'cannotOpenUpdateLink';
+  static const errorLaunchingUpdateLink = 'errorLaunchingUpdateLink';
+  static const termsPrefix = 'termsPrefix';
+  static const termsOfUse = 'termsOfUse';
+  static const and = 'and';
+  static const privacyPolicy = 'privacyPolicy';
+  static const termsSuffix = 'termsSuffix';
+  static const termsOfUseContent = 'termsOfUseContent';
+  static const privacyPolicyContent = 'privacyPolicyContent';
+  static const tryAgain = 'tryAgain';
 }

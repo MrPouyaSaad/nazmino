@@ -54,6 +54,11 @@ class HistoryBloc extends Bloc<HistoryEvent, HistoryState> {
         emit(HistoryLoaded(updatedList));
       } catch (e) {
         emit(DeleteHistoryError(e.toString()));
+        final currentState = state as HistoryLoaded;
+        final List<Transaction> transactions = List.from(
+          currentState.transactions,
+        );
+        emit(HistoryLoaded(transactions));
       }
     }
   }
@@ -69,6 +74,11 @@ class HistoryBloc extends Bloc<HistoryEvent, HistoryState> {
       add(LoadHistory());
     } catch (e) {
       emit(DeleteAllHistoryError(e.toString()));
+      final currentState = state as HistoryLoaded;
+      final List<Transaction> transactions = List.from(
+        currentState.transactions,
+      );
+      emit(HistoryLoaded(transactions));
     }
   }
 
@@ -100,6 +110,11 @@ class HistoryBloc extends Bloc<HistoryEvent, HistoryState> {
         emit(HistoryLoaded(updatedList));
       } catch (e) {
         emit(RestoreHistoryError(e.toString()));
+        final currentState = state as HistoryLoaded;
+        final List<Transaction> transactions = List.from(
+          currentState.transactions,
+        );
+        emit(HistoryLoaded(transactions));
       }
     }
   }

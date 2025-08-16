@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:nazmino/controller/theme_controller.dart';
 import 'package:nazmino/core/extensions/app_version.dart';
@@ -127,7 +128,7 @@ class AppDrawer extends StatelessWidget {
                     icon: Icons.logout,
                     text: AppMessages.logOut.tr,
                     onTap: () async {
-                      final authProvider = Get.find<AuthProvider>();
+                      final authProvider = context.read<AuthProvider>();
 
                       final success = await authProvider.logout();
                       if (success) {
