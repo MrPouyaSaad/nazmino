@@ -75,7 +75,7 @@ class TransactionDatasource implements ITransactionDataSource {
     );
     validateResponse(response);
 
-    final newTransaction = Transaction.fromJson(response.data);
+    final newTransaction = Transaction.fromJson(response.data['data']);
     log(
       '[TransactionDatasource] Transaction added with id: ${newTransaction.id}',
     );

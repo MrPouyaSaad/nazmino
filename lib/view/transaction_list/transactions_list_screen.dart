@@ -138,7 +138,7 @@ class _TransactionsListViewState extends State<_TransactionsListView> {
             ),
             SliverList(
               delegate: SliverChildBuilderDelegate((context, index) {
-                final t = state.transactions.reversed.toList()[index];
+                final t = state.transactions.toList()[index];
                 return TransactionTile(
                   transaction: t,
                   onTap: () => _showEditTransaction(context, t),

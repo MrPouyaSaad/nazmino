@@ -27,7 +27,7 @@ class AppErrorScreen extends StatelessWidget {
             ElevatedButton.icon(
               onPressed: onRetry,
               icon: const Icon(Icons.refresh),
-              label: const Text('تلاش مجدد'),
+              label: Text(AppMessages.tryAgain.tr),
             ),
           ],
         ),
@@ -59,7 +59,7 @@ class AppErrorWidget extends StatelessWidget {
           ElevatedButton.icon(
             onPressed: onRetry,
             icon: const Icon(Icons.refresh),
-            label: const Text(AppMessages.tryAgain),
+            label: Text(AppMessages.tryAgain.tr),
           ),
         ],
       ),

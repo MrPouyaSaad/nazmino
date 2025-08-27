@@ -30,11 +30,6 @@ android {
 
     defaultConfig {
 
- //ndk {
-  // abiFilters += listOf("armeabi-v7a", "arm64-v8a")
-//}
-
-
 
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
         applicationId = "com.nazmino"
