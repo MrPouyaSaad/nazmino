@@ -1,0 +1,31 @@
+name: Build Flutter iOS IPA
+
+on:
+  push:
+    branches: [ main ]  # هر بار push به main اجرا می‌شود
+  workflow_dispatch:     # امکان اجرای دستی workflow
+
+jobs:
+  build-ios:
+    runs-on: macos-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.35.1'
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Build iOS IPA (no signing)
+        run: flutter build ipa --release --no-codesign
+
+      - name: Upload IPA as artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: Nazmino-IPA
+          path: build/ios/ipa/*.ipa
