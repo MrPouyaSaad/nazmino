@@ -139,6 +139,7 @@ class AuthProvider with ChangeNotifier {
           log('[AuthProvider] Token saved to SharedPreferences');
 
           Get.offAll(TransactionsListScreen());
+          _codeSent = false;
           Get.snackbar(
             'موفقیت',
             'ورود موفقیت‌آمیز بود',

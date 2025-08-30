@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:nazmino/bloc/repository/history_repo.dart';
-import 'package:nazmino/core/api/validator.dart';
 import 'package:nazmino/core/translate/messages.dart';
 import 'package:nazmino/view/history/bloc/history_bloc.dart';
 import 'package:nazmino/widgets/error_widget.dart';

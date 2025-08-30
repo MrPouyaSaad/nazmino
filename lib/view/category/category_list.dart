@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
@@ -90,6 +91,14 @@ class _TransactionCategoryWidgetState extends State<TransactionCategoryWidget> {
               ),
             ],
           ).marginSymmetric(vertical: 4);
+        } else if (state is CategoryError) {
+          return Center(
+            child: IconButton(
+              icon: Icon(CupertinoIcons.refresh),
+              onPressed: () =>
+                  BlocProvider.of<CategoryBloc>(context).add(CategoryStarted()),
+            ),
+          ).marginAll(16);
         } else {
           throw 'Error';
         }
