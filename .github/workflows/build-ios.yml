@@ -2,8 +2,11 @@ name: IPA-Build
 
 on:
   push:
+    branches:
+      - main
     tags:
-      - 'v*'  # اجرا فقط وقتی که تگی با پیشوند v پوش بشه (مثل v1.0.0)
+      - 'v*'
+ # اجرا فقط وقتی که تگی با پیشوند v پوش بشه (مثل v1.0.0)
 
 jobs:
   build-and-release:
