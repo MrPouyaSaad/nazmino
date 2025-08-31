@@ -24,8 +24,5 @@ jobs:
       - name: Build iOS IPA (no signing)
         run: flutter build ipa --release --no-codesign
 
-      - name: Upload IPA as artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: Nazmino-IPA
-          path: build/ios/archive/*.ipa
+      - name: Show build folder structure
+        run: ls -R build/ios
