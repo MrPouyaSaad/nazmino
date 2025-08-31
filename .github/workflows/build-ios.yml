@@ -2,6 +2,8 @@ name: iOS IPA Build and Release
 
 on:
   push:
+    branches:
+      - main
     tags:
       - 'v*'   # اجرا فقط وقتی که تگی با پیشوند v پوش بشه (مثلا v1.0.0)
 
