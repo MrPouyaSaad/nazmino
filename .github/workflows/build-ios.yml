@@ -2,8 +2,8 @@ name: Build Flutter iOS IPA
 
 on:
   push:
-    branches: [ main ]  # هر بار push به main اجرا می‌شود
-  workflow_dispatch:     # امکان اجرای دستی workflow
+    branches: [ main ]
+  workflow_dispatch:
 
 jobs:
   build-ios:
@@ -28,4 +28,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: Nazmino-IPA
-          path: build/ios/ipa/*.ipa
+          path: build/ios/archive/*.ipa
